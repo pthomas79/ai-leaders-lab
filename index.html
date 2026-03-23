@@ -15,6 +15,8 @@
     --blue: #4a6cf7;
     --blue-hover: #3b5de7;
     --green: #10b981;
+    --nestle-red: #E2001A;
+    --nestle-red-dark: #C0001A;
     --white: #ffffff;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
@@ -82,82 +84,109 @@
     color: var(--gray-600);
   }
 
-  /* Progress Bar */
-  .progress-bar {
-    background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
-    padding: 20px 24px;
+  /* Hero Header */
+  .hero {
+    background: var(--nestle-red);
+    padding: 36px 24px 32px;
+  }
+
+  .hero-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
+    line-height: 1.15;
   }
 
   .progress-container {
-    max-width: 640px;
+    max-width: 600px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 0;
+    background: rgba(0,0,0,0.12);
+    border-radius: 100px;
+    padding: 8px 20px;
   }
 
   .progress-step {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-shrink: 0;
     cursor: pointer;
   }
 
   .progress-step.disabled {
     cursor: default;
-    opacity: 0.5;
+    opacity: 0.55;
   }
 
   .progress-circle {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     transition: all 0.3s ease;
-    border: 2px solid var(--gray-300);
-    color: var(--gray-400);
-    background: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.5);
+    background: transparent;
   }
 
   .progress-circle.active {
-    border-color: var(--blue);
-    background: var(--blue);
-    color: var(--white);
+    border-color: var(--white);
+    background: var(--white);
+    color: var(--nestle-red);
   }
 
   .progress-circle.done {
-    border-color: var(--green);
-    background: var(--green);
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.15);
     color: var(--white);
   }
 
   .progress-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
-    color: var(--gray-400);
+    color: rgba(255,255,255,0.5);
     transition: color 0.3s ease;
     white-space: nowrap;
   }
 
-  .progress-label.active { color: var(--gray-800); }
-  .progress-label.done { color: var(--green); }
+  .progress-label.active { color: var(--white); }
+  .progress-label.done { color: rgba(255,255,255,0.75); }
 
   .progress-line {
     flex: 1;
-    height: 2px;
-    background: var(--gray-200);
-    margin: 0 12px;
-    min-width: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 10px;
+    min-width: 16px;
     transition: background 0.3s ease;
   }
 
-  .progress-line.done { background: var(--green); }
+  .progress-line.done { background: rgba(255,255,255,0.5); }
 
   /* Main Content */
   .main {
@@ -173,7 +202,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--blue);
+    background: var(--nestle-red);
     color: var(--white);
     font-size: 12px;
     font-weight: 600;
@@ -204,60 +233,73 @@
   .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 10px;
   }
 
   .card {
     background: var(--white);
-    border: 2px solid var(--gray-200);
-    border-radius: 16px;
-    padding: 28px 24px;
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--nestle-red);
+    border-radius: 8px;
+    padding: 22px 20px;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
   }
 
   .card:hover {
-    border-color: var(--blue);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.09);
     transform: translateY(-2px);
+    border-color: var(--gray-300);
+    border-left-color: var(--nestle-red);
   }
 
   .card.selected {
-    border-color: var(--blue);
-    background: #f0f4ff;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+    background: #FFF5F5;
+    border-color: var(--gray-200);
+    border-left-color: var(--nestle-red);
+    box-shadow: 0 0 0 2px rgba(226,0,26,0.12);
   }
 
-  .card-icon {
-    font-size: 36px;
-    margin-bottom: 16px;
-    display: block;
+  .card-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #FFF0F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
+
+  .card-body { flex: 1; }
 
   .card-title {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--navy);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     line-height: 1.3;
   }
 
   .card-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--gray-500);
     line-height: 1.5;
   }
 
   .card-check {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 24px;
-    height: 24px;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    background: var(--blue);
+    background: var(--nestle-red);
     display: none;
     align-items: center;
     justify-content: center;
@@ -399,12 +441,12 @@
   }
 
   .btn-primary {
-    background: var(--blue);
+    background: var(--nestle-red);
     color: var(--white);
     box-shadow: var(--shadow);
   }
 
-  .btn-primary:hover { background: var(--blue-hover); box-shadow: var(--shadow-lg); }
+  .btn-primary:hover { background: var(--nestle-red-dark); box-shadow: var(--shadow-lg); }
   .btn-primary:disabled { background: var(--gray-300); cursor: not-allowed; box-shadow: none; }
 
   .btn-secondary {
@@ -427,7 +469,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--blue);
+    background: var(--nestle-red);
     color: var(--white);
     display: flex;
     align-items: center;
@@ -544,27 +586,31 @@
   </div>
 </div>
 
-<!-- Progress Bar -->
-<div class="progress-bar">
-  <div class="progress-container">
-    <div class="progress-step" id="ps1" onclick="clickStep(1)">
-      <div class="progress-circle active" id="pc1">1</div>
-      <span class="progress-label active" id="pl1">Choose Output</span>
-    </div>
-    <div class="progress-line" id="line1"></div>
-    <div class="progress-step disabled" id="ps2" onclick="clickStep(2)">
-      <div class="progress-circle" id="pc2">2</div>
-      <span class="progress-label" id="pl2">Set Context</span>
-    </div>
-    <div class="progress-line" id="line2"></div>
-    <div class="progress-step disabled" id="ps3" onclick="clickStep(3)">
-      <div class="progress-circle" id="pc3">3</div>
-      <span class="progress-label" id="pl3">Get Interviewed</span>
-    </div>
-    <div class="progress-line" id="line3"></div>
-    <div class="progress-step disabled" id="ps4" onclick="clickStep(4)">
-      <div class="progress-circle" id="pc4">4</div>
-      <span class="progress-label" id="pl4">Get Deliverable</span>
+<!-- Hero Header -->
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Leading the Business · March 25, 2026 · Rive Reine</span>
+    <h2 class="hero-title">Copilot Practice Lab</h2>
+    <div class="progress-container">
+      <div class="progress-step" id="ps1" onclick="clickStep(1)">
+        <div class="progress-circle active" id="pc1">1</div>
+        <span class="progress-label active" id="pl1">Choose Output</span>
+      </div>
+      <div class="progress-line" id="line1"></div>
+      <div class="progress-step disabled" id="ps2" onclick="clickStep(2)">
+        <div class="progress-circle" id="pc2">2</div>
+        <span class="progress-label" id="pl2">Set Context</span>
+      </div>
+      <div class="progress-line" id="line2"></div>
+      <div class="progress-step disabled" id="ps3" onclick="clickStep(3)">
+        <div class="progress-circle" id="pc3">3</div>
+        <span class="progress-label" id="pl3">Get Interviewed</span>
+      </div>
+      <div class="progress-line" id="line3"></div>
+      <div class="progress-step disabled" id="ps4" onclick="clickStep(4)">
+        <div class="progress-circle" id="pc4">4</div>
+        <span class="progress-label" id="pl4">Get Deliverable</span>
+      </div>
     </div>
   </div>
 </div>
@@ -578,28 +624,36 @@
 
     <div class="cards">
       <div class="card" onclick="selectCard(this, 'doc')" data-type="doc">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">📄</span>
-        <div class="card-title">Strategic Document</div>
-        <div class="card-desc">A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.</div>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+        <div class="card-body">
+          <div class="card-title">Strategic Document</div>
+          <div class="card-desc">A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.</div>
+        </div>
       </div>
       <div class="card" onclick="selectCard(this, 'data')" data-type="data">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">📊</span>
-        <div class="card-title">Data-Backed Analysis</div>
-        <div class="card-desc">An Excel-ready analysis with metrics, key findings, and structured data to support decisions.</div>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+        <div class="card-body">
+          <div class="card-title">Data-Backed Analysis</div>
+          <div class="card-desc">An Excel-ready analysis with metrics, key findings, and structured data to support decisions.</div>
+        </div>
       </div>
       <div class="card" onclick="selectCard(this, 'deck')" data-type="deck">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">📈</span>
-        <div class="card-title">Presentation</div>
-        <div class="card-desc">A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.</div>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+        <div class="card-body">
+          <div class="card-title">Presentation</div>
+          <div class="card-desc">A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.</div>
+        </div>
       </div>
       <div class="card" onclick="selectCard(this, 'comms')" data-type="comms">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">✉️</span>
-        <div class="card-title">Stakeholder Communication</div>
-        <div class="card-desc">A polished email or memo for a change initiative, team update, or executive briefing.</div>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+        <div class="card-body">
+          <div class="card-title">Stakeholder Communication</div>
+          <div class="card-desc">A polished email or memo for a change initiative, team update, or executive briefing.</div>
+        </div>
       </div>
     </div>
 
@@ -607,18 +661,22 @@
 
     <div class="cards">
       <div class="card" onclick="selectCard(this, 'researcher')" data-type="researcher">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">🔬</span>
-        <div class="card-title">Deep Research Report</div>
-        <div class="card-desc">Multi-source research on a topic — market trends, competitive landscape, or strategic context. With citations.</div>
-        <span class="card-agent-tag">🤖 Researcher agent</span>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap" style="background:#F5F3FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+        <div class="card-body">
+          <div class="card-title">Deep Research Report</div>
+          <div class="card-desc">Multi-source research on any topic — market trends, competitive landscape, or strategic context. With citations.</div>
+          <span class="card-agent-tag">Researcher agent</span>
+        </div>
       </div>
       <div class="card" onclick="selectCard(this, 'analyst')" data-type="analyst">
-        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span class="card-icon">🧮</span>
-        <div class="card-title">Data Analysis</div>
-        <div class="card-desc">Upload your Excel or CSV and get visual analysis — charts, key insights, and recommendations from your own data.</div>
-        <span class="card-agent-tag">🤖 Analyst agent</span>
+        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="card-icon-wrap" style="background:#F5F3FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+        <div class="card-body">
+          <div class="card-title">Data Analysis</div>
+          <div class="card-desc">Upload your Excel or CSV and get visual analysis — charts, key insights, and recommendations from your own data.</div>
+          <span class="card-agent-tag">Analyst agent</span>
+        </div>
       </div>
     </div>
 
