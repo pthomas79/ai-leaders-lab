@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI for Leaders — Copilot Practice Lab</title>
+<title>Leading the Business - Copilot Practice Lab</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -102,6 +102,12 @@
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .progress-step.disabled {
+    cursor: default;
+    opacity: 0.5;
   }
 
   .progress-circle {
@@ -504,29 +510,29 @@
          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
     <span class="nestle-logo-fallback" style="display:none;">Nestlé</span>
     <div class="header-divider"></div>
-    <span class="header-title">Leading the Business — AI Practice Lab</span>
+    <span class="header-title">Leading the Business - Copilot Practice Lab</span>
   </div>
 </div>
 
 <!-- Progress Bar -->
 <div class="progress-bar">
   <div class="progress-container">
-    <div class="progress-step">
+    <div class="progress-step" id="ps1" onclick="clickStep(1)">
       <div class="progress-circle active" id="pc1">1</div>
       <span class="progress-label active" id="pl1">Choose Output</span>
     </div>
     <div class="progress-line" id="line1"></div>
-    <div class="progress-step">
+    <div class="progress-step disabled" id="ps2" onclick="clickStep(2)">
       <div class="progress-circle" id="pc2">2</div>
       <span class="progress-label" id="pl2">Set Context</span>
     </div>
     <div class="progress-line" id="line2"></div>
-    <div class="progress-step">
+    <div class="progress-step disabled" id="ps3" onclick="clickStep(3)">
       <div class="progress-circle" id="pc3">3</div>
       <span class="progress-label" id="pl3">Get Interviewed</span>
     </div>
     <div class="progress-line" id="line3"></div>
-    <div class="progress-step">
+    <div class="progress-step disabled" id="ps4" onclick="clickStep(4)">
       <div class="progress-circle" id="pc4">4</div>
       <span class="progress-label" id="pl4">Get Deliverable</span>
     </div>
@@ -865,8 +871,23 @@ Write it in a professional but human tone — not corporate boilerplate. It shou
     }
   }
 
+  var maxStepReached = 1;
+
+  function clickStep(step) {
+    if (step <= maxStepReached) goToStep(step);
+  }
+
+  function updateStepNav() {
+    for (let i = 1; i <= 4; i++) {
+      var ps = document.getElementById('ps' + i);
+      ps.classList.toggle('disabled', i > maxStepReached);
+    }
+  }
+
   function goToStep(step) {
     currentStep = step;
+    if (step > maxStepReached) maxStepReached = step;
+    updateStepNav();
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
     document.getElementById('step' + step).classList.add('active');
     updateProgress(Math.min(step, 4));
