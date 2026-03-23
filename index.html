@@ -116,14 +116,14 @@
   }
 
   .progress-container {
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 0;
-    background: rgba(0,0,0,0.12);
+    background: rgba(0,0,0,0.15);
     border-radius: 100px;
-    padding: 8px 20px;
+    padding: 10px 24px;
   }
 
   .progress-step {
@@ -277,6 +277,24 @@
   }
 
   .card-body { flex: 1; }
+
+  .card-number {
+    position: absolute;
+    bottom: 10px;
+    right: 16px;
+    font-size: 52px;
+    font-weight: 800;
+    color: rgba(226,0,26,0.07);
+    line-height: 1;
+    letter-spacing: -2px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .card[data-type="researcher"] .card-number,
+  .card[data-type="analyst"] .card-number {
+    color: rgba(124,58,237,0.07);
+  }
 
   .card-title {
     font-size: 15px;
@@ -620,7 +638,7 @@
   <div class="step active" id="step1">
     <div class="step-badge">Step 1</div>
     <h1>What do you want to create?</h1>
-    <p class="step-subtitle">Pick the type of deliverable you'd like to walk out with today. The method is the same — the output is yours to choose.</p>
+    <p class="step-subtitle">You have <strong>6 options</strong> to choose from. Pick the type of deliverable you'd like to walk out with today — the method is the same for all of them.</p>
 
     <div class="cards">
       <div class="card" onclick="selectCard(this, 'doc')" data-type="doc">
@@ -630,6 +648,7 @@
           <div class="card-title">Strategic Document</div>
           <div class="card-desc">A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.</div>
         </div>
+        <div class="card-number">01</div>
       </div>
       <div class="card" onclick="selectCard(this, 'data')" data-type="data">
         <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
@@ -638,6 +657,7 @@
           <div class="card-title">Data-Backed Analysis</div>
           <div class="card-desc">An Excel-ready analysis with metrics, key findings, and structured data to support decisions.</div>
         </div>
+        <div class="card-number">02</div>
       </div>
       <div class="card" onclick="selectCard(this, 'deck')" data-type="deck">
         <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
@@ -646,6 +666,7 @@
           <div class="card-title">Presentation</div>
           <div class="card-desc">A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.</div>
         </div>
+        <div class="card-number">03</div>
       </div>
       <div class="card" onclick="selectCard(this, 'comms')" data-type="comms">
         <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
@@ -654,6 +675,7 @@
           <div class="card-title">Stakeholder Communication</div>
           <div class="card-desc">A polished email or memo for a change initiative, team update, or executive briefing.</div>
         </div>
+        <div class="card-number">04</div>
       </div>
     </div>
 
@@ -668,6 +690,7 @@
           <div class="card-desc">Multi-source research on any topic — market trends, competitive landscape, or strategic context. With citations.</div>
           <span class="card-agent-tag">Researcher agent</span>
         </div>
+        <div class="card-number">05</div>
       </div>
       <div class="card" onclick="selectCard(this, 'analyst')" data-type="analyst">
         <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
@@ -677,6 +700,7 @@
           <div class="card-desc">Upload your Excel or CSV and get visual analysis — charts, key insights, and recommendations from your own data.</div>
           <span class="card-agent-tag">Analyst agent</span>
         </div>
+        <div class="card-number">06</div>
       </div>
     </div>
 
