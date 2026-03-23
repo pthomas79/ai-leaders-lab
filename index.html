@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Leaders — Copilot Practice Lab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #2d3352;
+    --blue: #4a6cf7;
+    --blue-hover: #3b5de7;
+    --green: #10b981;
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nestle-logo {
+    height: 36px;
+    width: auto;
+  }
+
+  .nestle-logo-fallback {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--gray-300);
+  }
+
+  .header-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-600);
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 20px 24px;
+  }
+
+  .progress-container {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .progress-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid var(--gray-300);
+    color: var(--gray-400);
+    background: var(--white);
+  }
+
+  .progress-circle.active {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .progress-circle.done {
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--white);
+  }
+
+  .progress-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-400);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .progress-label.active { color: var(--gray-800); }
+  .progress-label.done { color: var(--green); }
+
+  .progress-line {
+    flex: 1;
+    height: 2px;
+    background: var(--gray-200);
+    margin: 0 12px;
+    min-width: 20px;
+    transition: background 0.3s ease;
+  }
+
+  .progress-line.done { background: var(--green); }
+
+  /* Main Content */
+  .main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 120px;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .step h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .step-subtitle {
+    font-size: 17px;
+    color: var(--gray-500);
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .card.selected {
+    border-color: var(--blue);
+    background: #f0f4ff;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.5;
+  }
+
+  .card-check {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card.selected .card-check { display: flex; }
+
+  /* Prompt Box */
+  .prompt-section {
+    margin-bottom: 32px;
+  }
+
+  .prompt-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .prompt-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .prompt-text {
+    color: #e2e8f0;
+    font-size: 15px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .prompt-text .fill-in {
+    color: var(--blue);
+    background: rgba(74, 108, 247, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { background: var(--green); border-color: var(--green); }
+
+  /* Tip Box */
+  .tip-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+  .tip-text {
+    font-size: 14px;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+
+  .tip-text strong { color: var(--gray-800); }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--blue);
+    color: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .btn-primary:hover { background: var(--blue-hover); box-shadow: var(--shadow-lg); }
+  .btn-primary:disabled { background: var(--gray-300); cursor: not-allowed; box-shadow: none; }
+
+  .btn-secondary {
+    background: var(--white);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-300);
+  }
+
+  .btn-secondary:hover { background: var(--gray-50); color: var(--gray-800); }
+
+  /* Instruction Steps */
+  .instruction {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .instruction-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .instruction-content {
+    flex: 1;
+  }
+
+  .instruction-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .instruction-desc {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.5;
+  }
+
+  /* Bonus Section */
+  .bonus-section {
+    background: linear-gradient(135deg, #1a1f36, #2d3352);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 36px;
+    color: var(--white);
+  }
+
+  .bonus-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .bonus-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .bonus-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* Success Screen */
+  .success-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .success-checklist {
+    list-style: none;
+    margin: 24px 0;
+  }
+
+  .success-checklist li {
+    padding: 10px 0;
+    font-size: 15px;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .success-checklist li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .step h1 { font-size: 26px; }
+    .progress-label { display: none; }
+    .progress-container { justify-content: center; }
+    .header-title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/d8/Nestl%C3%A9.svg"
+         alt="Nestlé" class="nestle-logo"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <span class="nestle-logo-fallback" style="display:none;">Nestlé</span>
+    <div class="header-divider"></div>
+    <span class="header-title">Leading the Business — AI Practice Lab</span>
+  </div>
+</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <div class="progress-container">
+    <div class="progress-step">
+      <div class="progress-circle active" id="pc1">1</div>
+      <span class="progress-label active" id="pl1">Choose Output</span>
+    </div>
+    <div class="progress-line" id="line1"></div>
+    <div class="progress-step">
+      <div class="progress-circle" id="pc2">2</div>
+      <span class="progress-label" id="pl2">Set Context</span>
+    </div>
+    <div class="progress-line" id="line2"></div>
+    <div class="progress-step">
+      <div class="progress-circle" id="pc3">3</div>
+      <span class="progress-label" id="pl3">Get Interviewed</span>
+    </div>
+    <div class="progress-line" id="line3"></div>
+    <div class="progress-step">
+      <div class="progress-circle" id="pc4">4</div>
+      <span class="progress-label" id="pl4">Get Deliverable</span>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1: Choose Output -->
+<div class="main">
+  <div class="step active" id="step1">
+    <div class="step-badge">Step 1</div>
+    <h1>What do you want to create?</h1>
+    <p class="step-subtitle">Pick the type of deliverable you'd like to walk out with today. The method is the same — the output is yours to choose.</p>
+
+    <div class="cards">
+      <div class="card" onclick="selectCard(this, 'doc')" data-type="doc">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">📄</span>
+        <div class="card-title">Strategic Document</div>
+        <div class="card-desc">A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.</div>
+      </div>
+      <div class="card" onclick="selectCard(this, 'data')" data-type="data">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">📊</span>
+        <div class="card-title">Data-Backed Analysis</div>
+        <div class="card-desc">An Excel-ready analysis with metrics, key findings, and structured data to support decisions.</div>
+      </div>
+      <div class="card" onclick="selectCard(this, 'deck')" data-type="deck">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">📈</span>
+        <div class="card-title">Presentation</div>
+        <div class="card-desc">A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.</div>
+      </div>
+      <div class="card" onclick="selectCard(this, 'comms')" data-type="comms">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">✉️</span>
+        <div class="card-title">Stakeholder Communication</div>
+        <div class="card-desc">A polished email or memo for a change initiative, team update, or executive briefing.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-step1" disabled onclick="goToStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Set Context -->
+  <div class="step" id="step2">
+    <div class="step-badge">Step 2</div>
+    <h1>Set your context</h1>
+    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the blanks with your own details. This teaches Copilot who you are before it does any work.</p>
+
+    <div class="instruction">
+      <div class="instruction-num">1</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Open Microsoft Copilot</div>
+        <div class="instruction-desc">Go to copilot.microsoft.com or open Copilot in your browser.</div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">2</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Copy this prompt and paste it in</div>
+        <div class="instruction-desc">Replace the highlighted parts with your real information. Be specific — the more context you give, the better the output.</div>
+      </div>
+    </div>
+
+    <div class="prompt-section">
+      <div class="prompt-label">Your first prompt</div>
+      <div class="prompt-box" id="context-prompt-box">
+        <button class="copy-btn" onclick="copyPrompt('context-prompt')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        </button>
+        <div class="prompt-text" id="context-prompt"></div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">3</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Send it and read the response</div>
+        <div class="instruction-desc">Copilot should respond by acknowledging your context and showing it understands your situation. If it starts creating something immediately, that's fine too — we'll refine it in the next step.</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Why this matters:</strong> Most people jump straight to asking AI for output. By setting your context first, you're giving Copilot the information it needs to produce something relevant to <em>your</em> specific situation — not generic advice. This is the foundation of context engineering.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">I've sent my prompt — Next →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Interview -->
+  <div class="step" id="step3">
+    <div class="step-badge">Step 3</div>
+    <h1>Let Copilot interview you</h1>
+    <p class="step-subtitle">This is the most powerful move in AI. Instead of trying to write the perfect prompt, you let Copilot ask <em>you</em> the right questions. Copy this prompt and paste it into your same conversation.</p>
+
+    <div class="prompt-section">
+      <div class="prompt-label">Your second prompt</div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt('interview-prompt')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        </button>
+        <div class="prompt-text" id="interview-prompt">Before creating anything, I'd like you to interview me so you fully understand what I need. Ask me questions one by one — give me numbered multiple-choice answers for each question, and include your recommendation. Once you've asked enough questions to feel confident, let me know you're ready to create my deliverable.</div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">1</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Answer each question Copilot asks you</div>
+        <div class="instruction-desc">Pick from the multiple-choice options or type your own answer. There's no wrong answer — just go with what feels right for your real situation.</div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">2</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Go through 4–6 questions</div>
+        <div class="instruction-desc">The interview usually takes 3–5 minutes. Each answer helps Copilot build a richer understanding of what you need.</div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">3</div>
+      <div class="instruction-content">
+        <div class="instruction-title">When Copilot says it's ready, move to the next step</div>
+        <div class="instruction-desc">Copilot will tell you it has enough information. That's your cue to continue.</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Why this works:</strong> You just turned a one-way prompt into a two-way conversation. Copilot now has 10x more context than if you'd tried to write everything yourself. This is the difference between using AI as a search engine and using it as a thinking partner.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">Interview done — Create my deliverable →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Generate -->
+  <div class="step" id="step4">
+    <div class="step-badge">Step 4</div>
+    <h1>Generate your deliverable</h1>
+    <p class="step-subtitle">Time for the payoff. Copy this final prompt to tell Copilot exactly what to produce. Then watch it work.</p>
+
+    <div class="prompt-section">
+      <div class="prompt-label">Your third prompt</div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt('generate-prompt')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        </button>
+        <div class="prompt-text" id="generate-prompt"></div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Not perfect?</strong> That's expected and that's fine. Tell Copilot what to fix: "The second section needs more detail" or "Make the tone more formal." You can also simply say <strong>"How can we make this better?"</strong> — Copilot will suggest improvements you haven't thought of.</div>
+    </div>
+
+    <div class="bonus-section">
+      <div class="bonus-badge">⚡ Bonus Prompt</div>
+      <div class="bonus-title">Make it better</div>
+      <div class="bonus-desc">Once you have your first output, paste this to push it further. This is how you go from "good enough" to "impressive."</div>
+      <div class="prompt-box" style="background: rgba(0,0,0,0.3);">
+        <button class="copy-btn" onclick="copyPrompt('bonus-prompt')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        </button>
+        <div class="prompt-text" id="bonus-prompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement, then implement them all in an updated version.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(3)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(5)" style="background: var(--green);">I've got my deliverable ✓</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Success -->
+  <div class="step" id="step5">
+    <span class="success-icon">🎯</span>
+    <h1>You just did context engineering.</h1>
+    <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable — using three simple moves that work with any AI tool, for any task.</p>
+
+    <ul class="success-checklist">
+      <li><strong>Set your context</strong> — you told AI who you are and what you're working on</li>
+      <li><strong>Let it interview you</strong> — you turned a prompt into a conversation</li>
+      <li><strong>Constrained the output</strong> — you told it exactly what to produce</li>
+      <li><strong>Iterated</strong> — you refined the output instead of starting over</li>
+    </ul>
+
+    <div class="tip-box">
+      <span class="tip-icon">🔑</span>
+      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot, ChatGPT, or any AI tool — start by setting context, let it interview you, then ask for a specific output. You'll get dramatically better results than prompting from scratch.</div>
+    </div>
+
+    <div class="bonus-section" style="margin-top: 32px;">
+      <div class="bonus-badge">🧠 Pro Move</div>
+      <div class="bonus-title">Save your context for next time</div>
+      <div class="bonus-desc">Copy your entire conversation into a Word document and save it to a folder on SharePoint or OneDrive. Next time you work on this topic, paste it back in as your starting context. You just built a reusable "brain" for this project.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedType = null;
+
+  const contextPrompts = {
+    doc: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+My current challenge: [Describe a real operational challenge you're facing right now — something you need to deliver, decide on, or improve in the coming weeks. Be specific about the situation.]
+
+I need to produce a strategic document that addresses this challenge — something I could share with my leadership team or stakeholders. Think of it as a Word document with clear structure and actionable recommendations.
+
+Before you create anything, make sure you fully understand my situation.`,
+    data: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+My current challenge: [Describe a real operational challenge you're facing right now — something where data and analysis would help you make a better decision. Be specific.]
+
+I need to produce a structured, data-backed analysis that supports decision-making — something I could paste into Excel with metrics, key findings, and clear recommendations.
+
+Before you create anything, make sure you fully understand my situation.`,
+    deck: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+My current challenge: [Describe a real operational challenge you're facing right now — something you need to present to stakeholders, your team, or leadership. Be specific.]
+
+I need to produce a compelling presentation — slide-by-slide content with talking points that I could build in PowerPoint. It should tell a clear story with a logical flow.
+
+Before you create anything, make sure you fully understand my situation.`,
+    comms: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+My current challenge: [Describe a real situation where you need to communicate something important — a change, an update, a decision, a new initiative. Who needs to hear it and why?]
+
+I need to produce a polished stakeholder communication — an email or memo that's clear, professional, and drives the right action. It should be ready to send.
+
+Before you create anything, make sure you fully understand my situation.`
+  };
+
+  const generatePrompts = {
+    doc: `Great — based on everything we've discussed, please create my strategic document now. Structure it as:
+
+1. Executive Summary (2–3 paragraphs)
+2. Situation Analysis (current state, key challenges)
+3. Strategic Options (2–3 options with pros and cons for each)
+4. Recommended Approach (your recommendation with rationale)
+5. Implementation Roadmap (key actions, owners, timeline)
+6. Next Steps (immediate actions for the next 2 weeks)
+
+Write it in a professional tone suitable for senior leadership. Make it specific to my situation — no generic filler. Format it so I can paste it directly into a Word document.`,
+    data: `Great — based on everything we've discussed, please create my analysis now. Structure it as:
+
+1. Analysis Summary (key question we're answering, 2–3 sentences)
+2. Key Metrics Dashboard (a table with the most important metrics, current values or estimates, and targets)
+3. Data Breakdown (structured tables showing the analysis by relevant categories)
+4. Key Findings (3–5 numbered insights from the data, with supporting figures)
+5. Risk Factors (what could change these numbers)
+6. Recommended Actions (what the data says we should do, prioritized)
+
+Use tables wherever possible. Make the numbers realistic for my context — use estimates where exact data isn't available and flag them as such. Format it so I can paste directly into Excel.`,
+    deck: `Great — based on everything we've discussed, please create my presentation now. Structure it as:
+
+Slide 1: Title slide (compelling title + subtitle + my name)
+Slide 2: The Challenge (what problem we're solving and why it matters now)
+Slide 3: Current Situation (data points, context, what's happening today)
+Slide 4–5: Our Approach (the strategy or solution, broken into clear pillars)
+Slide 6: Evidence / Data (supporting metrics, benchmarks, or proof points)
+Slide 7: Roadmap (timeline, key milestones, who owns what)
+Slide 8: Next Steps & Ask (what we need from the audience, clear call to action)
+
+For each slide, give me:
+— The slide title
+— 3–4 bullet points of content
+— Speaker notes (what I should say in my own words)
+
+Keep it concise. No slide should have more than 5 bullet points. Make it tell a story.`,
+    comms: `Great — based on everything we've discussed, please draft my communication now. Structure it as:
+
+Subject Line: [Clear, specific, action-oriented]
+
+Opening: Why I'm writing and why it matters to the reader (2–3 sentences)
+
+Context: The background they need — what happened, what's changing, what decision was made (1 short paragraph)
+
+The Key Message: The core thing I need them to understand (clear and unambiguous)
+
+What This Means For You: Specific impact on the reader and what changes for them
+
+Action Needed: Exactly what I need from them, with a deadline if relevant
+
+Closing: Supportive tone, offer to discuss, next touchpoint
+
+Write it in a professional but human tone — not corporate boilerplate. It should feel like it came from a leader who respects their audience's time. Keep it under 400 words.`
+  };
+
+  function selectCard(card, type) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedType = type;
+    document.getElementById('btn-step1').disabled = false;
+  }
+
+  function updateProgress(step) {
+    for (let i = 1; i <= 4; i++) {
+      const circle = document.getElementById('pc' + i);
+      const label = document.getElementById('pl' + i);
+      circle.classList.remove('active', 'done');
+      label.classList.remove('active', 'done');
+      if (i < step) {
+        circle.classList.add('done');
+        circle.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        label.classList.add('done');
+      } else if (i === step) {
+        circle.classList.add('active');
+        circle.textContent = i;
+        label.classList.add('active');
+      } else {
+        circle.textContent = i;
+      }
+    }
+    for (let i = 1; i <= 3; i++) {
+      const line = document.getElementById('line' + i);
+      line.classList.toggle('done', i < step);
+    }
+  }
+
+  function goToStep(step) {
+    currentStep = step;
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + step).classList.add('active');
+    updateProgress(Math.min(step, 4));
+
+    if (step === 2 && selectedType) {
+      document.getElementById('context-prompt').textContent = contextPrompts[selectedType];
+    }
+    if (step === 4 && selectedType) {
+      document.getElementById('generate-prompt').textContent = generatePrompts[selectedType];
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyPrompt(id) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btns = document.querySelectorAll('.copy-btn');
+      const box = document.getElementById(id).closest('.prompt-box');
+      const btn = box.querySelector('.copy-btn');
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy';
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
