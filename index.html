@@ -265,6 +265,36 @@
 
   .card.selected .card-check { display: flex; }
 
+  .card-agent-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #7c3aed;
+    background: #f3f0ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 100px;
+    padding: 3px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .agent-warning {
+    display: none;
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #92400e;
+    line-height: 1.6;
+  }
+
+  .agent-warning strong { color: #78350f; }
+
   /* Prompt Box */
   .prompt-section {
     margin-bottom: 32px;
@@ -573,6 +603,25 @@
       </div>
     </div>
 
+    <p style="font-size:13px; font-weight:600; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.5px; margin: 28px 0 12px;">Want to go further? Use a specialist agent</p>
+
+    <div class="cards">
+      <div class="card" onclick="selectCard(this, 'researcher')" data-type="researcher">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">🔬</span>
+        <div class="card-title">Deep Research Report</div>
+        <div class="card-desc">Multi-source research on a topic — market trends, competitive landscape, or strategic context. With citations.</div>
+        <span class="card-agent-tag">🤖 Researcher agent</span>
+      </div>
+      <div class="card" onclick="selectCard(this, 'analyst')" data-type="analyst">
+        <div class="card-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="card-icon">🧮</span>
+        <div class="card-title">Data Analysis</div>
+        <div class="card-desc">Upload your Excel or CSV and get visual analysis — charts, key insights, and recommendations from your own data.</div>
+        <span class="card-agent-tag">🤖 Analyst agent</span>
+      </div>
+    </div>
+
     <div class="btn-row">
       <button class="btn btn-primary" id="btn-step1" disabled onclick="goToStep(2)">Continue →</button>
     </div>
@@ -587,8 +636,8 @@
     <div class="instruction">
       <div class="instruction-num">1</div>
       <div class="instruction-content">
-        <div class="instruction-title">Open Microsoft Copilot</div>
-        <div class="instruction-desc">Go to copilot.microsoft.com or open Copilot in your browser.</div>
+        <div class="instruction-title" id="open-copilot-title">Open Microsoft Copilot</div>
+        <div class="instruction-desc" id="open-copilot-desc">Open Copilot in Microsoft Teams (look for the Copilot icon in the left sidebar), or go to copilot.microsoft.com in your browser. Use the same Copilot throughout — don't switch apps mid-conversation.</div>
       </div>
     </div>
 
@@ -598,6 +647,12 @@
         <div class="instruction-title">Copy this prompt and paste it in</div>
         <div class="instruction-desc">Replace the highlighted parts with your real information. Be specific — the more context you give, the better the output.</div>
       </div>
+    </div>
+
+    <div class="agent-warning" id="agent-warning">
+      <strong>⚠️ This stream uses a specialist Copilot agent</strong> — it may not be enabled on your account yet.<br><br>
+      <strong>To check:</strong> Open Copilot in Teams or at copilot.microsoft.com. Look for an <strong>Agents</strong> section in the left sidebar. If you see <em id="agent-name-in-warning"></em> listed there, you're good to go.<br><br>
+      <strong>If you don't see it:</strong> Your IT admin needs to enable it, or choose one of the standard output types above for today's session. These agents are included in the standard M365 Copilot licence — they just need to be switched on. Note: both agents share a <strong>25-query monthly limit</strong>, so use them for tasks that really benefit from deep reasoning.
     </div>
 
     <div class="prompt-section">
@@ -738,7 +793,7 @@
 
     <div class="tip-box">
       <span class="tip-icon">🔑</span>
-      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot, ChatGPT, or any AI tool — start by setting context, let it interview you, then ask for a specific output. You'll get dramatically better results than prompting from scratch.</div>
+      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot in Teams, Word, Outlook, or PowerPoint — start by setting context, let it interview you, then ask for a specific output. You'll get dramatically better results than prompting from scratch.</div>
     </div>
 
     <div class="bonus-section" style="margin-top: 32px;">
@@ -781,7 +836,25 @@ My current challenge: [Describe a real situation where you need to communicate s
 
 I need to produce a polished stakeholder communication — an email or memo that's clear, professional, and drives the right action. It should be ready to send.
 
-Before you create anything, make sure you fully understand my situation.`
+Before you create anything, make sure you fully understand my situation.`,
+
+    researcher: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+I need to research the following topic: [Describe what you want to understand — e.g., "the competitive landscape for plant-based nutrition in Southeast Asia" or "best practices in supply chain resilience for FMCG companies" or "emerging AI regulations affecting consumer goods companies"].
+
+My goal: [What decision or deliverable will this research feed into? e.g., "I'm building a business case for a new initiative" or "I need to present strategic options to my leadership team"].
+
+Before you start researching, please ask me any clarifying questions you need to focus the research effectively.`,
+
+    analyst: `I am [your name], [your title] at Nestlé, based in [your location]. I work in [your function — e.g., marketing, finance, supply chain, commercial].
+
+I have attached a data file containing: [Describe what's in your file — e.g., "quarterly sales data by market and SKU" or "12 months of budget vs. actual costs by category" or "customer feedback survey results"].
+
+My analysis goal: [What do you want to understand from this data? e.g., "I want to identify which markets are underperforming vs. target" or "I need to find the main drivers of cost overrun"].
+
+What this will inform: [e.g., "I'm presenting to my VP next week on where to prioritise investment"].
+
+Please review the data I've attached and ask me any clarifying questions before you begin the analysis.`
   };
 
   const generatePrompts = {
@@ -804,7 +877,7 @@ Write it in a professional tone suitable for senior leadership. Make it specific
 5. Risk Factors (what could change these numbers)
 6. Recommended Actions (what the data says we should do, prioritized)
 
-Use tables wherever possible. Make the numbers realistic for my context — use estimates where exact data isn't available and flag them as such. Format it so I can paste directly into Excel.`,
+Use tables wherever possible. Make the numbers realistic for my context — use estimates where exact data isn't available and flag them as such. Format it cleanly so I can copy it and paste it into an Excel spreadsheet.`,
     deck: `Great — based on everything we've discussed, please create my presentation now. Structure it as:
 
 Slide 1: Title slide (compelling title + subtitle + my name)
@@ -837,7 +910,30 @@ Action Needed: Exactly what I need from them, with a deadline if relevant
 
 Closing: Supportive tone, offer to discuss, next touchpoint
 
-Write it in a professional but human tone — not corporate boilerplate. It should feel like it came from a leader who respects their audience's time. Keep it under 400 words.`
+Write it in a professional but human tone — not corporate boilerplate. It should feel like it came from a leader who respects their audience's time. Keep it under 400 words.`,
+
+    researcher: `Based on our conversation, please produce a comprehensive research report. Structure it as:
+
+1. Executive Summary (key findings in 3–4 sentences — write it so a busy executive can stop here)
+2. Context & Background (why this topic matters right now, key forces at play)
+3. Key Findings (5–7 numbered insights, each with supporting evidence or data points)
+4. Landscape Overview (who's doing what — companies, markets, trends worth knowing)
+5. Implications for My Context (what this means specifically for my situation at Nestlé)
+6. Strategic Options (2–3 paths forward based on what the research shows)
+7. Sources (list all references used with links where available)
+
+Write it for a senior leader audience. Be specific — no generic observations. Prioritise insight over volume.`,
+
+    analyst: `Based on our conversation and the data I've shared, please produce a full analysis report. Structure it as:
+
+1. Analysis Summary (what question we answered and the one-line answer, in 2–3 sentences)
+2. Key Metrics Overview (a table of the most important numbers — actuals, targets, variances)
+3. Top Findings (5 numbered insights from the data, each with the specific number that supports it)
+4. Visual Breakdown (charts or tables showing the most important patterns — by region, time period, category, or whatever is most relevant to my data)
+5. What's Driving the Numbers (root cause analysis of the most significant trends or gaps)
+6. Recommended Actions (3 specific things the data says I should do, in priority order)
+
+Make it clear and visual. Write for a senior leadership audience who want insight, not raw numbers.`
   };
 
   function selectCard(card, type) {
@@ -894,6 +990,18 @@ Write it in a professional but human tone — not corporate boilerplate. It shou
 
     if (step === 2 && selectedType) {
       document.getElementById('context-prompt').textContent = contextPrompts[selectedType];
+      var isAgent = selectedType === 'researcher' || selectedType === 'analyst';
+      var agentName = selectedType === 'researcher' ? 'Researcher' : 'Analyst';
+      var warning = document.getElementById('agent-warning');
+      warning.style.display = isAgent ? 'block' : 'none';
+      if (isAgent) {
+        document.getElementById('agent-name-in-warning').textContent = agentName;
+        document.getElementById('open-copilot-title').textContent = 'Open the ' + agentName + ' agent';
+        document.getElementById('open-copilot-desc').textContent = 'In Microsoft Teams or copilot.microsoft.com, look for the Agents section in the left sidebar. Select "' + agentName + '" to open a dedicated conversation with that agent. If you don\'t see it, check the disclaimer below.';
+      } else {
+        document.getElementById('open-copilot-title').textContent = 'Open Microsoft Copilot';
+        document.getElementById('open-copilot-desc').textContent = 'Open Copilot in Microsoft Teams (look for the Copilot icon in the left sidebar), or go to copilot.microsoft.com in your browser. Use the same Copilot throughout — don\'t switch apps mid-conversation.';
+      }
     }
     if (step === 4 && selectedType) {
       document.getElementById('generate-prompt').textContent = generatePrompts[selectedType];
