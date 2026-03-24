@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leading the Business - Copilot Practice Lab</title>
 <link rel="stylesheet" href="styles.css">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
+
+<div x-data="lab()" x-cloak>
 
 <!-- Header -->
 <div class="header">
@@ -26,107 +29,84 @@
     <span class="hero-eyebrow">Leading the Business · March 25, 2026 · Rive Reine</span>
     <h2 class="hero-title">Copilot Practice Lab</h2>
     <div class="progress-container">
-      <div class="progress-step" id="ps1" onclick="clickStep(1)">
-        <div class="progress-circle active" id="pc1">1</div>
-        <span class="progress-label active" id="pl1">Choose Output</span>
-      </div>
-      <div class="progress-line" id="line1"></div>
-      <div class="progress-step disabled" id="ps2" onclick="clickStep(2)">
-        <div class="progress-circle" id="pc2">2</div>
-        <span class="progress-label" id="pl2">Set Context</span>
-      </div>
-      <div class="progress-line" id="line2"></div>
-      <div class="progress-step disabled" id="ps3" onclick="clickStep(3)">
-        <div class="progress-circle" id="pc3">3</div>
-        <span class="progress-label" id="pl3">Get Interviewed</span>
-      </div>
-      <div class="progress-line" id="line3"></div>
-      <div class="progress-step disabled" id="ps4" onclick="clickStep(4)">
-        <div class="progress-circle" id="pc4">4</div>
-        <span class="progress-label" id="pl4">Get Deliverable</span>
-      </div>
+      <template x-for="i in 4" :key="i">
+        <div class="contents">
+          <div class="progress-step"
+               :class="{ disabled: i > maxStep }"
+               @click="i <= maxStep && goTo(i)">
+            <div class="progress-circle"
+                 :class="{ active: i === step, done: i < step }">
+              <template x-if="i < step">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </template>
+              <template x-if="i >= step">
+                <span x-text="i"></span>
+              </template>
+            </div>
+            <span class="progress-label"
+                  :class="{ active: i === step, done: i < step }"
+                  x-text="stepLabels[i - 1]"></span>
+          </div>
+          <div x-show="i < 4" class="progress-line" :class="{ done: i < step }"></div>
+        </div>
+      </template>
     </div>
   </div>
 </div>
 
-<!-- STEP 1: Choose Output -->
+<!-- Main Content -->
 <div class="main">
-  <div class="step active" id="step1">
+
+  <!-- STEP 1: Choose Output -->
+  <div class="step" :class="{ active: step === 1 }">
     <div class="step-badge">Step 1</div>
     <h1>What do you want to create?</h1>
     <p class="step-subtitle">You have <strong>6 options</strong> to choose from. Pick the type of deliverable you'd like to walk out with today — the method is the same for all of them.</p>
 
     <div class="cards">
-      <div class="card" onclick="selectCard(this, 'doc')" data-type="doc">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
-        <div class="card-body">
-          <div class="card-title">Strategic Document</div>
-          <div class="card-desc">A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.</div>
+      <template x-for="card in cards.slice(0, 4)" :key="card.type">
+        <div class="card"
+             :class="{ selected: selectedType === card.type }"
+             @click="selectedType = card.type"
+             :data-type="card.type">
+          <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
+          <div class="card-body">
+            <div class="card-title" x-text="card.title"></div>
+            <div class="card-desc" x-text="card.desc"></div>
+          </div>
+          <div class="card-number" x-text="card.number"></div>
         </div>
-        <div class="card-number">01</div>
-      </div>
-      <div class="card" onclick="selectCard(this, 'data')" data-type="data">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
-        <div class="card-body">
-          <div class="card-title">Data-Backed Analysis</div>
-          <div class="card-desc">An Excel-ready analysis with metrics, key findings, and structured data to support decisions.</div>
-        </div>
-        <div class="card-number">02</div>
-      </div>
-      <div class="card" onclick="selectCard(this, 'deck')" data-type="deck">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-        <div class="card-body">
-          <div class="card-title">Presentation</div>
-          <div class="card-desc">A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.</div>
-        </div>
-        <div class="card-number">03</div>
-      </div>
-      <div class="card" onclick="selectCard(this, 'comms')" data-type="comms">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
-        <div class="card-body">
-          <div class="card-title">Stakeholder Communication</div>
-          <div class="card-desc">A polished email or memo for a change initiative, team update, or executive briefing.</div>
-        </div>
-        <div class="card-number">04</div>
-      </div>
+      </template>
     </div>
 
     <p style="font-size:13px; font-weight:600; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.5px; margin: 28px 0 12px;">Want to go further? Use a specialist agent</p>
 
     <div class="cards">
-      <div class="card" onclick="selectCard(this, 'researcher')" data-type="researcher">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap" style="background:#F5F3FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-        <div class="card-body">
-          <div class="card-title">Deep Research Report</div>
-          <div class="card-desc">Multi-source research on any topic — market trends, competitive landscape, or strategic context. With citations.</div>
-          <span class="card-agent-tag">Researcher agent</span>
+      <template x-for="card in cards.slice(4)" :key="card.type">
+        <div class="card"
+             :class="{ selected: selectedType === card.type }"
+             @click="selectedType = card.type"
+             :data-type="card.type">
+          <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
+          <div class="card-body">
+            <div class="card-title" x-text="card.title"></div>
+            <div class="card-desc" x-text="card.desc"></div>
+            <span class="card-agent-tag" x-text="card.agentTag"></span>
+          </div>
+          <div class="card-number" x-text="card.number"></div>
         </div>
-        <div class="card-number">05</div>
-      </div>
-      <div class="card" onclick="selectCard(this, 'analyst')" data-type="analyst">
-        <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="card-icon-wrap" style="background:#F5F3FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
-        <div class="card-body">
-          <div class="card-title">Data Analysis</div>
-          <div class="card-desc">Upload your Excel or CSV and get visual analysis — charts, key insights, and recommendations from your own data.</div>
-          <span class="card-agent-tag">Analyst agent</span>
-        </div>
-        <div class="card-number">06</div>
-      </div>
+      </template>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-primary" id="btn-step1" disabled onclick="goToStep(2)">Continue →</button>
+      <button class="btn btn-primary" :disabled="!selectedType" @click="goTo(2)">Continue →</button>
     </div>
   </div>
 
   <!-- STEP 2: Set Context -->
-  <div class="step" id="step2">
+  <div class="step" :class="{ active: step === 2 }">
     <div class="step-badge">Step 2</div>
     <h1>Set your context</h1>
     <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the blanks with your own details. This teaches Copilot who you are before it does any work.</p>
@@ -134,8 +114,10 @@
     <div class="instruction">
       <div class="instruction-num">1</div>
       <div class="instruction-content">
-        <div class="instruction-title" id="open-copilot-title">Open Microsoft Copilot</div>
-        <div class="instruction-desc" id="open-copilot-desc">Open Copilot in Microsoft Teams (look for the Copilot icon in the left sidebar), or go to copilot.microsoft.com in your browser. Use the same Copilot throughout — don't switch apps mid-conversation.</div>
+        <div class="instruction-title" x-text="isAgent ? 'Open the ' + agentName + ' agent' : 'Open Microsoft Copilot'"></div>
+        <div class="instruction-desc" x-text="isAgent
+          ? 'In Microsoft Teams or copilot.microsoft.com, look for the Agents section in the left sidebar. Select \'' + agentName + '\' to open a dedicated conversation with that agent. If you don\'t see it, check the disclaimer below.'
+          : 'Open Copilot in Microsoft Teams (look for the Copilot icon in the left sidebar), or go to copilot.microsoft.com in your browser. Use the same Copilot throughout — don\'t switch apps mid-conversation.'"></div>
       </div>
     </div>
 
@@ -147,20 +129,20 @@
       </div>
     </div>
 
-    <div class="agent-warning" id="agent-warning">
+    <div class="agent-warning" x-show="isAgent" style="display:none;">
       <strong>⚠️ This stream uses a specialist Copilot agent</strong> — it may not be enabled on your account yet.<br><br>
-      <strong>To check:</strong> Open Copilot in Teams or at copilot.microsoft.com. Look for an <strong>Agents</strong> section in the left sidebar. If you see <em id="agent-name-in-warning"></em> listed there, you're good to go.<br><br>
+      <strong>To check:</strong> Open Copilot in Teams or at copilot.microsoft.com. Look for an <strong>Agents</strong> section in the left sidebar. If you see <em x-text="agentName"></em> listed there, you're good to go.<br><br>
       <strong>If you don't see it:</strong> Your IT admin needs to enable it, or choose one of the standard output types above for today's session. These agents are included in the standard M365 Copilot licence — they just need to be switched on. Note: both agents share a <strong>25-query monthly limit</strong>, so use them for tasks that really benefit from deep reasoning.
     </div>
 
     <div class="prompt-section">
       <div class="prompt-label">Your first prompt</div>
-      <div class="prompt-box" id="context-prompt-box">
-        <button class="copy-btn" onclick="copyPrompt('context-prompt')">
+      <div class="prompt-box">
+        <button class="copy-btn" @click="copy($refs.contextPrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" id="context-prompt"></div>
+        <div class="prompt-text" x-ref="contextPrompt" x-text="contextPrompts[selectedType] || ''"></div>
       </div>
     </div>
 
@@ -178,13 +160,13 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
-      <button class="btn btn-primary" onclick="goToStep(3)">I've sent my prompt — Next →</button>
+      <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(3)">I've sent my prompt — Next →</button>
     </div>
   </div>
 
   <!-- STEP 3: Interview -->
-  <div class="step" id="step3">
+  <div class="step" :class="{ active: step === 3 }">
     <div class="step-badge">Step 3</div>
     <h1>Let Copilot interview you</h1>
     <p class="step-subtitle">This is the most powerful move in AI. Instead of trying to write the perfect prompt, you let Copilot ask <em>you</em> the right questions. Copy this prompt and paste it into your same conversation.</p>
@@ -192,11 +174,11 @@
     <div class="prompt-section">
       <div class="prompt-label">Your second prompt</div>
       <div class="prompt-box">
-        <button class="copy-btn" onclick="copyPrompt('interview-prompt')">
+        <button class="copy-btn" @click="copy($refs.interviewPrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" id="interview-prompt">Before creating anything, I'd like you to interview me so you fully understand what I need. Ask me questions one by one — give me numbered multiple-choice answers for each question, and include your recommendation. Once you've asked enough questions to feel confident, let me know you're ready to create my deliverable.</div>
+        <div class="prompt-text" x-ref="interviewPrompt">Before creating anything, I'd like you to interview me so you fully understand what I need. Ask me questions one by one — give me numbered multiple-choice answers for each question, and include your recommendation. Once you've asked enough questions to feel confident, let me know you're ready to create my deliverable.</div>
       </div>
     </div>
 
@@ -230,13 +212,13 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
-      <button class="btn btn-primary" onclick="goToStep(4)">Interview done — Create my deliverable →</button>
+      <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(4)">Interview done — Create my deliverable →</button>
     </div>
   </div>
 
   <!-- STEP 4: Generate -->
-  <div class="step" id="step4">
+  <div class="step" :class="{ active: step === 4 }">
     <div class="step-badge">Step 4</div>
     <h1>Generate your deliverable</h1>
     <p class="step-subtitle">Time for the payoff. Copy this final prompt to tell Copilot exactly what to produce. Then watch it work.</p>
@@ -244,11 +226,11 @@
     <div class="prompt-section">
       <div class="prompt-label">Your third prompt</div>
       <div class="prompt-box">
-        <button class="copy-btn" onclick="copyPrompt('generate-prompt')">
+        <button class="copy-btn" @click="copy($refs.generatePrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" id="generate-prompt"></div>
+        <div class="prompt-text" x-ref="generatePrompt" x-text="generatePrompts[selectedType] || ''"></div>
       </div>
     </div>
 
@@ -262,22 +244,22 @@
       <div class="bonus-title">Make it better</div>
       <div class="bonus-desc">Once you have your first output, paste this to push it further. This is how you go from "good enough" to "impressive."</div>
       <div class="prompt-box" style="background: rgba(0,0,0,0.3);">
-        <button class="copy-btn" onclick="copyPrompt('bonus-prompt')">
+        <button class="copy-btn" @click="copy($refs.bonusPrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" id="bonus-prompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement, then implement them all in an updated version.</div>
+        <div class="prompt-text" x-ref="bonusPrompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement, then implement them all in an updated version.</div>
       </div>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goToStep(3)">← Back</button>
-      <button class="btn btn-primary" onclick="goToStep(5)" style="background: var(--green);">I've got my deliverable ✓</button>
+      <button class="btn btn-secondary" @click="goTo(3)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(5)" style="background: var(--green);">I've got my deliverable ✓</button>
     </div>
   </div>
 
   <!-- STEP 5: Success -->
-  <div class="step" id="step5">
+  <div class="step" :class="{ active: step === 5 }">
     <span class="success-icon">🎯</span>
     <h1>You just did context engineering.</h1>
     <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable — using three simple moves that work with any AI tool, for any task.</p>
@@ -300,6 +282,8 @@
       <div class="bonus-desc">Copy your entire conversation into a Word document and save it to a folder on SharePoint or OneDrive. Next time you work on this topic, paste it back in as your starting context. You just built a reusable "brain" for this project.</div>
     </div>
   </div>
+</div>
+
 </div>
 
 <script src="script.js"></script>
