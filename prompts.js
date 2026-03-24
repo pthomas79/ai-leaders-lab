@@ -1,26 +1,26 @@
 const contextPrompts = {
-  doc: `I need to: [Describe your challenge — what you need to deliver, decide on, or improve in the coming weeks. Be specific.]
+  doc: `I need to: [Describe your challenge. What do you need to deliver, decide on, or improve in the coming weeks? Be specific.]
 
-Help me produce a strategic document I can share with leadership — structured, actionable, ready to paste into Word. Let's have a discussion and you can interview me.`,
-  data: `I need to: [Describe your challenge — where data and analysis would help you make a better decision. Be specific.]
+Help me produce a strategic document I can share with leadership. Structured, actionable, ready to paste into Word. Let's have a discussion and you can interview me, one question at a time.`,
+  data: `I need to: [Describe your challenge. Where would data and analysis help you make a better decision? Be specific.]
 
-Help me produce a data-backed analysis with metrics, key findings, and recommendations — structured so I can paste it into Excel. Let's have a discussion and you can interview me.`,
-  deck: `I need to: [Describe your challenge — what you need to present to stakeholders, your team, or leadership. Be specific.]
+Help me produce a data-backed analysis with metrics, key findings, and recommendations. Structured so I can paste it into Excel. Let's have a discussion and you can interview me, one question at a time.`,
+  deck: `I need to: [Describe your challenge. What do you need to present to stakeholders, your team, or leadership? Be specific.]
 
-Help me produce a compelling presentation — slide-by-slide content with talking points I can build in PowerPoint. Let's have a discussion and you can interview me.`,
-  comms: `I need to: [Describe your situation — what you need to communicate, to whom, and why it matters.]
+Help me produce a compelling presentation. Slide-by-slide content with talking points I can build in PowerPoint. Let's have a discussion and you can interview me, one question at a time.`,
+  comms: `I need to: [Describe your situation. What do you need to communicate, to whom, and why does it matter?]
 
-Help me draft a polished stakeholder communication — clear, professional, and ready to send. Let's have a discussion and you can interview me.`,
-  researcher: `I need to research: [Describe the topic — e.g., competitive landscape, market trends, best practices, regulatory changes.]
+Help me draft a polished stakeholder communication. Clear, professional, and ready to send. Let's have a discussion and you can interview me, one question at a time.`,
+  researcher: `I need to research: [Describe the topic, e.g. competitive landscape, market trends, best practices, regulatory changes.]
 
 This will feed into: [What decision or deliverable depends on this research?]
 
-Let's have a discussion and you can interview me.`,
+Let's have a discussion and you can interview me, one question at a time.`,
   analyst: `I need to analyse: [Describe the data you have and what you want to learn from it.]
 
 This will inform: [What decision or presentation depends on this analysis?]
 
-I've attached my data file. Let's have a discussion and you can interview me.`,
+I've attached my data file. Let's have a discussion and you can interview me, one question at a time.`,
 };
 
 const generatePrompts = {
