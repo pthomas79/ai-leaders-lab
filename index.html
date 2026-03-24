@@ -109,7 +109,7 @@
   <div class="step" :class="{ active: step === 2 }">
     <div class="step-badge">Step 2</div>
     <h1>Set your context</h1>
-    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the blanks with your own details. This teaches Copilot who you are before it does any work.</p>
+    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the blanks. Then have a conversation to build alignment and refine your thinking together.</p>
 
     <div class="instruction">
       <div class="instruction-num">1</div>
@@ -185,7 +185,7 @@
   <div class="step" :class="{ active: step === 3 }">
     <div class="step-badge">Step 3</div>
     <h1>Generate your deliverable</h1>
-    <p class="step-subtitle">Time for the payoff. Copy this final prompt to tell Copilot exactly what to produce. Then watch it work.</p>
+    <p class="step-subtitle">You've done the thinking together. Now tell Copilot to produce the asset you need.</p>
 
     <div class="prompt-section">
       <div class="prompt-label">Your second prompt</div>
@@ -206,7 +206,7 @@
     <div class="bonus-section">
       <div class="bonus-badge">⚡ Bonus Prompt</div>
       <div class="bonus-title">Make it better</div>
-      <div class="bonus-desc">Once you have your first output, paste this to push it further. This is how you go from "good enough" to "impressive."</div>
+      <div class="bonus-desc">Once you have your document, use this to stress-test the output before you share it.</div>
       <div class="prompt-box" style="background: rgba(0,0,0,0.3);">
         <button class="copy-btn" @click="copy($refs.bonusPrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -226,12 +226,13 @@
   <div class="step" :class="{ active: step === 4 }">
     <span class="success-icon">🎯</span>
     <h1>You just learned how to pilot Copilot.</h1>
-    <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable — using three simple moves that work with any AI tool, for any task.</p>
+    <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable. Here's what you did:</p>
 
     <ul class="success-checklist">
-      <li><strong>Set your context</strong> — you told AI what you need and let it interview you</li>
-      <li><strong>Constrained the output</strong> — you told it exactly what to produce</li>
-      <li><strong>Iterated</strong> — you refined the output instead of starting over</li>
+      <li><strong>Set your context</strong> — you told Copilot what you need</li>
+      <li><strong>Had a conversation</strong> — you built alignment through back-and-forth</li>
+      <li><strong>Refined together</strong> — you challenged, sharpened, and improved the thinking</li>
+      <li><strong>Produced the asset</strong> — you got a real deliverable you can use</li>
     </ul>
 
     <div class="tip-box">

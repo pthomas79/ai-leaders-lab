@@ -1,13 +1,13 @@
 const contextPrompts = {
   doc: `I need to: [Describe your challenge. What do you need to deliver, decide on, or improve in the coming weeks? Be specific.]
 
-Help me produce a strategic document I can share with leadership. Structured, actionable, ready to paste into Word. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
+Help me produce a strategic document I can share with leadership. Structured, actionable, ready as a Word document. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
   data: `I need to: [Describe your challenge. Where would data and analysis help you make a better decision? Be specific.]
 
-Help me produce a data-backed analysis with metrics, key findings, and recommendations. Structured so I can paste it into Excel. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
+Help me produce a data-backed analysis with metrics, key findings, and recommendations. Structured as an Excel workbook. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
   deck: `I need to: [Describe your challenge. What do you need to present to stakeholders, your team, or leadership? Be specific.]
 
-Help me produce a compelling presentation. Slide-by-slide content with talking points I can build in PowerPoint. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
+Help me produce a compelling presentation as a PowerPoint deck. Slide-by-slide content with talking points. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
   comms: `I need to: [Describe your situation. What do you need to communicate, to whom, and why does it matter?]
 
 Help me draft a polished stakeholder communication. Clear, professional, and ready to send. Keep your responses concise and direct. No filler, no preamble. Ask sharp questions, give straight answers. Let's have a discussion and you can interview me, one question at a time.`,
