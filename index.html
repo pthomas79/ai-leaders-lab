@@ -149,19 +149,35 @@
     <div class="instruction">
       <div class="instruction-num">3</div>
       <div class="instruction-content">
-        <div class="instruction-title">Answer Copilot's questions</div>
-        <div class="instruction-desc">Copilot will interview you one question at a time to understand your situation. Answer 4-6 questions. The more context you give, the better the output.</div>
+        <div class="instruction-title">Have a conversation with Copilot</div>
+        <div class="instruction-desc">This is a back-and-forth conversation, not a questionnaire. The goal is alignment: Copilot understands your situation and you feel understood. The conversation is done when either Copilot says it has enough information, or you feel confident it gets what you need. A good move: ask Copilot to "play back what you've understood so far."</div>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-num">4</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Refine until you're happy</div>
+        <div class="instruction-desc">Don't rush to the next step. Push back, challenge, and sharpen the content together. Try questions like:</div>
+        <ul class="refine-questions">
+          <li>How could this be better?</li>
+          <li>Let's roast this content we've been creating together</li>
+          <li>What assumption in this is most likely to be wrong?</li>
+          <li>Now that we have the full picture, what are some tensions, gaps, or opportunities to simplify?</li>
+          <li>Thoughts?</li>
+          <li>What else should I consider?</li>
+        </ul>
       </div>
     </div>
 
     <div class="tip-box">
       <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Why this matters:</strong> You just turned a one-way prompt into a two-way conversation. Copilot now has 10x more context than if you'd tried to write everything yourself. This is the difference between using AI as a search engine and using it as a thinking partner.</div>
+      <div class="tip-text"><strong>Why this matters:</strong> This conversation creates alignment between you and the AI. Instead of guessing what you need from a single prompt, Copilot builds a shared understanding of your situation. That's the difference between using AI as a search engine and using it as a thinking partner. When you ask it to play back its understanding, you can catch misalignment before it produces anything.</div>
     </div>
 
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(3)">I've had my interview — Next →</button>
+      <button class="btn btn-primary" @click="goTo(3)">Content is ready — Next →</button>
     </div>
   </div>
 
@@ -184,7 +200,7 @@
 
     <div class="tip-box">
       <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Not perfect?</strong> That's expected and that's fine. Tell Copilot what to fix: "The second section needs more detail" or "Make the tone more formal." You can also simply say <strong>"How can we make this better?"</strong> — Copilot will suggest improvements you haven't thought of.</div>
+      <div class="tip-text"><strong>Not perfect?</strong> That's expected. You have two options: keep refining in the chat ("Make the tone more formal"), or open the document directly in Word/Excel/PowerPoint and use Copilot there to edit in place. You can also ask <strong>"How can we make this better?"</strong> to get suggestions you haven't thought of.</div>
     </div>
 
     <div class="bonus-section">
@@ -196,7 +212,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" x-ref="bonusPrompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement, then implement them all in an updated version.</div>
+        <div class="prompt-text" x-ref="bonusPrompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement.</div>
       </div>
     </div>
 

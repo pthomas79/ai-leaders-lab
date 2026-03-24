@@ -510,6 +510,15 @@ body {
   line-height: 1.5;
 }
 
+.refine-questions {
+  margin: 8px 0 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.8;
+  font-style: italic;
+}
+
 /* Bonus Section */
 .bonus-section {
   background: linear-gradient(135deg, #1a1f36, #2d3352);
