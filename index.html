@@ -29,7 +29,7 @@
     <span class="hero-eyebrow">Leading the Business · March 25, 2026 · Rive Reine</span>
     <h2 class="hero-title">Copilot Practice Lab</h2>
     <div class="progress-container">
-      <template x-for="i in 4" :key="i">
+      <template x-for="i in 3" :key="i">
         <div class="contents">
           <div class="progress-step"
                :class="{ disabled: i > maxStep }"
@@ -47,7 +47,7 @@
                   :class="{ active: i === step, done: i < step }"
                   x-text="stepLabels[i - 1]"></span>
           </div>
-          <div x-show="i < 4" class="progress-line" :class="{ done: i < step }"></div>
+          <div x-show="i < 3" class="progress-line" :class="{ done: i < step }"></div>
         </div>
       </template>
     </div>
@@ -149,82 +149,30 @@
     <div class="instruction">
       <div class="instruction-num">3</div>
       <div class="instruction-content">
-        <div class="instruction-title">Send it and read the response</div>
-        <div class="instruction-desc">Copilot should respond by acknowledging your context and showing it understands your situation. If it starts creating something immediately, that's fine too — we'll refine it in the next step.</div>
+        <div class="instruction-title">Answer Copilot's questions</div>
+        <div class="instruction-desc">Copilot will interview you one question at a time to understand your situation. Answer 4-6 questions. The more context you give, the better the output.</div>
       </div>
     </div>
 
     <div class="tip-box">
       <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Why this matters:</strong> Most people jump straight to asking AI for output. By setting your context first, you're giving Copilot the information it needs to produce something relevant to <em>your</em> specific situation — not generic advice. This is the foundation of context engineering.</div>
+      <div class="tip-text"><strong>Why this matters:</strong> You just turned a one-way prompt into a two-way conversation. Copilot now has 10x more context than if you'd tried to write everything yourself. This is the difference between using AI as a search engine and using it as a thinking partner.</div>
     </div>
 
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(3)">I've sent my prompt — Next →</button>
+      <button class="btn btn-primary" @click="goTo(3)">I've had my interview — Next →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Interview -->
+  <!-- STEP 3: Generate -->
   <div class="step" :class="{ active: step === 3 }">
     <div class="step-badge">Step 3</div>
-    <h1>Let Copilot interview you</h1>
-    <p class="step-subtitle">This is the most powerful move in AI. Instead of trying to write the perfect prompt, you let Copilot ask <em>you</em> the right questions. Copy this prompt and paste it into your same conversation.</p>
-
-    <div class="prompt-section">
-      <div class="prompt-label">Your second prompt</div>
-      <div class="prompt-box">
-        <button class="copy-btn" @click="copy($refs.interviewPrompt, $event)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copy
-        </button>
-        <div class="prompt-text" x-ref="interviewPrompt">Before creating anything, I'd like you to interview me so you fully understand what I need. Ask me questions one by one — give me numbered multiple-choice answers for each question, and include your recommendation. Once you've asked enough questions to feel confident, let me know you're ready to create my deliverable.</div>
-      </div>
-    </div>
-
-    <div class="instruction">
-      <div class="instruction-num">1</div>
-      <div class="instruction-content">
-        <div class="instruction-title">Answer each question Copilot asks you</div>
-        <div class="instruction-desc">Pick from the multiple-choice options or type your own answer. There's no wrong answer — just go with what feels right for your real situation.</div>
-      </div>
-    </div>
-
-    <div class="instruction">
-      <div class="instruction-num">2</div>
-      <div class="instruction-content">
-        <div class="instruction-title">Go through 4–6 questions</div>
-        <div class="instruction-desc">The interview usually takes 3–5 minutes. Each answer helps Copilot build a richer understanding of what you need.</div>
-      </div>
-    </div>
-
-    <div class="instruction">
-      <div class="instruction-num">3</div>
-      <div class="instruction-content">
-        <div class="instruction-title">When Copilot says it's ready, move to the next step</div>
-        <div class="instruction-desc">Copilot will tell you it has enough information. That's your cue to continue.</div>
-      </div>
-    </div>
-
-    <div class="tip-box">
-      <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Why this works:</strong> You just turned a one-way prompt into a two-way conversation. Copilot now has 10x more context than if you'd tried to write everything yourself. This is the difference between using AI as a search engine and using it as a thinking partner.</div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(4)">Interview done — Create my deliverable →</button>
-    </div>
-  </div>
-
-  <!-- STEP 4: Generate -->
-  <div class="step" :class="{ active: step === 4 }">
-    <div class="step-badge">Step 4</div>
     <h1>Generate your deliverable</h1>
     <p class="step-subtitle">Time for the payoff. Copy this final prompt to tell Copilot exactly what to produce. Then watch it work.</p>
 
     <div class="prompt-section">
-      <div class="prompt-label">Your third prompt</div>
+      <div class="prompt-label">Your second prompt</div>
       <div class="prompt-box">
         <button class="copy-btn" @click="copy($refs.generatePrompt, $event)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -253,20 +201,19 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" @click="goTo(3)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(5)" style="background: var(--green);">I've got my deliverable ✓</button>
+      <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(4)" style="background: var(--green);">I've got my deliverable ✓</button>
     </div>
   </div>
 
-  <!-- STEP 5: Success -->
-  <div class="step" :class="{ active: step === 5 }">
+  <!-- STEP 4: Success -->
+  <div class="step" :class="{ active: step === 4 }">
     <span class="success-icon">🎯</span>
     <h1>You just did context engineering.</h1>
     <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable — using three simple moves that work with any AI tool, for any task.</p>
 
     <ul class="success-checklist">
-      <li><strong>Set your context</strong> — you told AI who you are and what you're working on</li>
-      <li><strong>Let it interview you</strong> — you turned a prompt into a conversation</li>
+      <li><strong>Set your context</strong> — you told AI what you need and let it interview you</li>
       <li><strong>Constrained the output</strong> — you told it exactly what to produce</li>
       <li><strong>Iterated</strong> — you refined the output instead of starting over</li>
     </ul>
@@ -286,6 +233,7 @@
 
 </div>
 
+<script src="prompts.js"></script>
 <script src="script.js"></script>
 
 </body>
