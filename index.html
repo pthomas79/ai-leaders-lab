@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leading the Business - Copilot Practice Lab</title>
+<title>BSM AI Leaders Lab - Copilot Practice Lab</title>
+<meta name="theme-color" content="#00203d">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- Alpine.js 3.17.5, self-hosted (pinned). No runtime CDN dependency. -->
+<script defer src="vendor/alpine-3.17.5.min.js"></script>
 </head>
 <body>
 
@@ -14,19 +17,20 @@
 <!-- Header -->
 <div class="header">
   <div class="header-left">
-    <img src="https://upload.wikimedia.org/wikipedia/en/d/d8/Nestl%C3%A9.svg"
-         alt="Nestlé" class="nestle-logo"
+    <img src="assets/bsm-logo-white.svg"
+         alt="BSM – Bernhard Schulte Shipmanagement" class="client-logo"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <span class="nestle-logo-fallback" style="display:none;">Nestlé</span>
+    <span class="client-logo-fallback" style="display:none;">BSM</span>
     <div class="header-divider"></div>
-    <span class="header-title">Leading the Business - Copilot Practice Lab</span>
+    <span class="header-title">BSM AI Leaders Lab - Copilot Practice Lab</span>
   </div>
 </div>
 
 <!-- Hero Header -->
 <div class="hero">
   <div class="hero-inner">
-    <span class="hero-eyebrow">Leading the Business · March 25, 2026 · Rive Reine</span>
+    <!-- TODO(Paris): add workshop date and city here, e.g. "BSM AI Leaders Lab · <date> · <city>" -->
+    <span class="hero-eyebrow">BSM AI Leaders Lab</span>
     <h2 class="hero-title">Copilot Practice Lab</h2>
     <div class="progress-container">
       <template x-for="i in 3" :key="i">
@@ -125,7 +129,7 @@
       <div class="instruction-num">2</div>
       <div class="instruction-content">
         <div class="instruction-title">Copy this prompt and paste it in</div>
-        <div class="instruction-desc">Replace the highlighted parts with your real information. Be specific — the more context you give, the better the output.</div>
+        <div class="instruction-desc">Replace the highlighted <span class="fill-in-sample">[parts in brackets]</span> with your real information. Be specific — the more context you give, the better the output.</div>
       </div>
     </div>
 
@@ -142,7 +146,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" x-ref="contextPrompt" x-text="contextPrompts[selectedType] || ''"></div>
+        <div class="prompt-text" x-ref="contextPrompt" x-html="highlight(contextPrompts[selectedType] || '')"></div>
       </div>
     </div>
 
@@ -194,7 +198,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" x-ref="generatePrompt" x-text="generatePrompts[selectedType] || ''"></div>
+        <div class="prompt-text" x-ref="generatePrompt" x-html="highlight(generatePrompts[selectedType] || '')"></div>
       </div>
     </div>
 
@@ -252,6 +256,14 @@
 
 <script src="prompts.js"></script>
 <script src="script.js"></script>
+<script>
+  // Offline support: cache the page after first load (see sw.js). Network-first, so updates still arrive.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
 
 </body>
 </html>
