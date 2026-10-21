@@ -433,6 +433,22 @@ body {
   font-weight: 500;
 }
 
+.safe-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+.progress-current {
+  display: none;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: rgba(255,255,255,0.85);
+}
+
 /* Tip Box */
 .tip-box {
   background: #fffbeb;
@@ -612,6 +628,9 @@ body {
   .cards { grid-template-columns: 1fr; }
   .step h1 { font-size: 26px; }
   .progress-label { display: none; }
+  .progress-current { display: block; }
+  .progress-container { padding: 10px 16px; }
+  .progress-line { margin: 0 6px; min-width: 10px; }
   .progress-container { justify-content: center; }
   .header-title { display: none; }
   .header-divider { display: none; }

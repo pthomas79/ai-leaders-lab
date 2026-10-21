@@ -3,7 +3,7 @@ function lab() {
     step: 1,
     maxStep: 1,
     selectedType: null,
-    stepLabels: ['Choose Output', 'Set Context', 'Get Deliverable'],
+    stepLabels: ['Choose', 'Context', 'Conversation', 'Refine', 'Produce'],
 
     get isAgent() {
       return this.selectedType === 'researcher' || this.selectedType === 'analyst';
