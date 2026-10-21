@@ -1,17 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Inter (variable, latin subset) self-hosted from @fontsource-variable/inter 5.3.0. SIL OFL 1.1, see fonts/OFL.txt */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('fonts/inter-latin-wght-normal.woff2') format('woff2');
+}
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 [x-cloak] { display: none !important; }
 .contents { display: contents; }
 
 :root {
-  --navy: #1a1f36;
-  --navy-light: #2d3352;
+  --navy: #00203D;
+  --navy-light: #00396F;
   --blue: #4a6cf7;
   --blue-hover: #3b5de7;
   --green: #10b981;
-  --nestle-red: #E2001A;
-  --nestle-red-dark: #C0001A;
+  /* Client brand (BSM, from bs-shipmanagement.com). Change these for another client. */
+  --brand: #00396F;          /* BSM navy */
+  --brand-dark: #00203D;     /* BSM deep navy */
+  --brand-accent: #0087CC;   /* BSM blue */
+  --brand-sky: #77CBEA;      /* BSM light blue */
+  --brand-tint: #EEF5FB;     /* light navy tint for selected cards */
+  --brand-tint-2: #E6EEF6;   /* icon backgrounds */
+  --brand-rgb: 0, 57, 111;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --white: #ffffff;
   --gray-50: #f9fafb;
   --gray-100: #f3f4f6;
@@ -29,7 +43,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   background: var(--gray-50);
   color: var(--gray-800);
   min-height: 100vh;
@@ -38,8 +52,8 @@ body {
 
 /* Header */
 .header {
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
+  background: var(--brand-dark);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -55,33 +69,34 @@ body {
   gap: 16px;
 }
 
-.nestle-logo {
-  height: 36px;
+.client-logo {
+  height: 32px;
   width: auto;
+  display: block;
 }
 
-.nestle-logo-fallback {
+.client-logo-fallback {
   font-size: 22px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--white);
   letter-spacing: -0.5px;
 }
 
 .header-divider {
   width: 1px;
   height: 28px;
-  background: var(--gray-300);
+  background: rgba(255,255,255,0.25);
 }
 
 .header-title {
   font-size: 15px;
   font-weight: 500;
-  color: var(--gray-600);
+  color: rgba(255,255,255,0.85);
 }
 
 /* Hero Header */
 .hero {
-  background: var(--nestle-red);
+  background: var(--brand);
   padding: 36px 24px 32px;
 }
 
@@ -97,7 +112,7 @@ body {
   font-weight: 600;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
+  color: var(--brand-sky);
   margin-bottom: 10px;
 }
 
@@ -152,7 +167,7 @@ body {
 .progress-circle.active {
   border-color: var(--white);
   background: var(--white);
-  color: var(--nestle-red);
+  color: var(--brand);
 }
 
 .progress-circle.done {
@@ -197,7 +212,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--nestle-red);
+  background: var(--brand);
   color: var(--white);
   font-size: 12px;
   font-weight: 600;
@@ -235,7 +250,7 @@ body {
 .card {
   background: var(--white);
   border: 1px solid var(--gray-200);
-  border-left: 4px solid var(--nestle-red);
+  border-left: 4px solid var(--brand);
   border-radius: 8px;
   padding: 22px 20px;
   cursor: pointer;
@@ -250,21 +265,21 @@ body {
   box-shadow: 0 4px 20px rgba(0,0,0,0.09);
   transform: translateY(-2px);
   border-color: var(--gray-300);
-  border-left-color: var(--nestle-red);
+  border-left-color: var(--brand);
 }
 
 .card.selected {
-  background: #FFF5F5;
+  background: var(--brand-tint);
   border-color: var(--gray-200);
-  border-left-color: var(--nestle-red);
-  box-shadow: 0 0 0 2px rgba(226,0,26,0.12);
+  border-left-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(var(--brand-rgb),0.15);
 }
 
 .card-icon-wrap {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #FFF0F0;
+  background: var(--brand-tint-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -279,7 +294,7 @@ body {
   right: 16px;
   font-size: 52px;
   font-weight: 800;
-  color: rgba(226,0,26,0.07);
+  color: rgba(var(--brand-rgb),0.07);
   line-height: 1;
   letter-spacing: -2px;
   pointer-events: none;
@@ -312,7 +327,7 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--nestle-red);
+  background: var(--brand);
   display: none;
   align-items: center;
   justify-content: center;
@@ -337,7 +352,7 @@ body {
 }
 
 .agent-warning {
-  display: none;
+  /* visibility controlled by Alpine x-show (do not set display here) */
   background: #fffbeb;
   border: 1px solid #fcd34d;
   border-radius: 12px;
@@ -367,7 +382,7 @@ body {
 .prompt-box {
   background: var(--navy);
   border-radius: 12px;
-  padding: 24px;
+  padding: 56px 24px 24px;  /* top row reserved for the Copy button */
   position: relative;
   box-shadow: var(--shadow-lg);
 }
@@ -377,12 +392,12 @@ body {
   font-size: 15px;
   line-height: 1.8;
   white-space: pre-wrap;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .prompt-text .fill-in {
-  color: var(--blue);
-  background: rgba(74, 108, 247, 0.15);
+  color: var(--brand-sky);
+  background: rgba(119, 203, 234, 0.16);
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 500;
@@ -400,7 +415,7 @@ body {
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   transition: all 0.2s;
   display: flex;
   align-items: center;
@@ -409,6 +424,30 @@ body {
 
 .copy-btn:hover { background: rgba(255,255,255,0.2); }
 .copy-btn.copied { background: var(--green); border-color: var(--green); }
+
+.fill-in-sample {
+  color: var(--brand);
+  background: var(--brand-tint-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.safe-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+.progress-current {
+  display: none;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: rgba(255,255,255,0.85);
+}
 
 /* Tip Box */
 .tip-box {
@@ -444,7 +483,7 @@ body {
   border-radius: 12px;
   font-size: 15px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
@@ -454,12 +493,12 @@ body {
 }
 
 .btn-primary {
-  background: var(--nestle-red);
+  background: var(--brand);
   color: var(--white);
   box-shadow: var(--shadow);
 }
 
-.btn-primary:hover { background: var(--nestle-red-dark); box-shadow: var(--shadow-lg); }
+.btn-primary:hover { background: var(--brand-dark); box-shadow: var(--shadow-lg); }
 .btn-primary:disabled { background: var(--gray-300); cursor: not-allowed; box-shadow: none; }
 
 .btn-secondary {
@@ -482,7 +521,7 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--nestle-red);
+  background: var(--brand);
   color: var(--white);
   display: flex;
   align-items: center;
@@ -521,7 +560,7 @@ body {
 
 /* Bonus Section */
 .bonus-section {
-  background: linear-gradient(135deg, #1a1f36, #2d3352);
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand));
   border-radius: 16px;
   padding: 32px;
   margin-top: 36px;
@@ -589,6 +628,18 @@ body {
   .cards { grid-template-columns: 1fr; }
   .step h1 { font-size: 26px; }
   .progress-label { display: none; }
+  .progress-current { display: block; }
+  .progress-container { padding: 10px 16px; }
+  .progress-line { margin: 0 6px; min-width: 10px; }
   .progress-container { justify-content: center; }
   .header-title { display: none; }
+  .header-divider { display: none; }
+  .header { padding: 12px 16px; }
+  .client-logo { height: 28px; }
+  .main { padding: 32px 16px 96px; }
+  .prompt-box { padding: 52px 16px 18px; }
+  .prompt-text { font-size: 14px; }
+  .btn-row { flex-wrap: wrap; }
+  /* larger tap targets for the progress steps */
+  .progress-step { padding: 8px; margin: -8px; }
 }

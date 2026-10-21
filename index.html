@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leading the Business - Copilot Practice Lab</title>
+<title>BSM AI Leaders Lab - Copilot Practice Lab</title>
+<meta name="theme-color" content="#00203d">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- Alpine.js 3.17.5, self-hosted (pinned). No runtime CDN dependency. -->
+<script defer src="vendor/alpine-3.17.5.min.js"></script>
 </head>
 <body>
 
@@ -14,22 +17,23 @@
 <!-- Header -->
 <div class="header">
   <div class="header-left">
-    <img src="https://upload.wikimedia.org/wikipedia/en/d/d8/Nestl%C3%A9.svg"
-         alt="Nestlé" class="nestle-logo"
+    <img src="assets/bsm-logo-white.svg"
+         alt="BSM – Bernhard Schulte Shipmanagement" class="client-logo"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <span class="nestle-logo-fallback" style="display:none;">Nestlé</span>
+    <span class="client-logo-fallback" style="display:none;">BSM</span>
     <div class="header-divider"></div>
-    <span class="header-title">Leading the Business - Copilot Practice Lab</span>
+    <span class="header-title">BSM AI Leaders Lab - Copilot Practice Lab</span>
   </div>
 </div>
 
 <!-- Hero Header -->
 <div class="hero">
   <div class="hero-inner">
-    <span class="hero-eyebrow">Leading the Business · March 25, 2026 · Rive Reine</span>
+    <!-- TODO(Paris): add workshop date and city here, e.g. "BSM AI Leaders Lab · <date> · <city>" -->
+    <span class="hero-eyebrow">BSM AI Leaders Lab</span>
     <h2 class="hero-title">Copilot Practice Lab</h2>
     <div class="progress-container">
-      <template x-for="i in 3" :key="i">
+      <template x-for="i in 5" :key="i">
         <div class="contents">
           <div class="progress-step"
                :class="{ disabled: i > maxStep }"
@@ -47,10 +51,11 @@
                   :class="{ active: i === step, done: i < step }"
                   x-text="stepLabels[i - 1]"></span>
           </div>
-          <div x-show="i < 3" class="progress-line" :class="{ done: i < step }"></div>
+          <div x-show="i < 5" class="progress-line" :class="{ done: i < step }"></div>
         </div>
       </template>
     </div>
+    <div class="progress-current" x-text="step <= 5 ? 'Step ' + step + ' of 5 · ' + stepLabels[step - 1] : 'Done · Context, Conversation, Refine, Produce'"></div>
   </div>
 </div>
 
@@ -59,9 +64,9 @@
 
   <!-- STEP 1: Choose Output -->
   <div class="step" :class="{ active: step === 1 }">
-    <div class="step-badge">Step 1</div>
+    <div class="step-badge">Step 1 · Choose</div>
     <h1>What do you want to create?</h1>
-    <p class="step-subtitle">You have <strong>6 options</strong> to choose from. Pick the type of deliverable you'd like to walk out with today — the method is the same for all of them.</p>
+    <p class="step-subtitle">You have <strong>6 options</strong> to choose from. Pick the type of deliverable you'd like to walk out with today. The method is the same for all of them: <strong>Context, Conversation, Refine, Produce</strong>.</p>
 
     <div class="cards">
       <template x-for="card in cards.slice(0, 4)" :key="card.type">
@@ -105,11 +110,11 @@
     </div>
   </div>
 
-  <!-- STEP 2: Set Context -->
+  <!-- STEP 2: Context -->
   <div class="step" :class="{ active: step === 2 }">
-    <div class="step-badge">Step 2</div>
-    <h1>Set your context</h1>
-    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the blanks. Then have a conversation to build alignment and refine your thinking together.</p>
+    <div class="step-badge">Step 2 · Context</div>
+    <h1>Context: set the scene</h1>
+    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the highlighted blanks. This gives Copilot the context it needs before it starts asking you questions.</p>
 
     <div class="instruction">
       <div class="instruction-num">1</div>
@@ -121,11 +126,12 @@
       </div>
     </div>
 
+
     <div class="instruction">
       <div class="instruction-num">2</div>
       <div class="instruction-content">
         <div class="instruction-title">Copy this prompt and paste it in</div>
-        <div class="instruction-desc">Replace the highlighted parts with your real information. Be specific — the more context you give, the better the output.</div>
+        <div class="instruction-desc">Replace the highlighted <span class="fill-in-sample">[parts in brackets]</span> with your real information. Be specific: the more context you give, the better the output.</div>
       </div>
     </div>
 
@@ -142,23 +148,61 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" x-ref="contextPrompt" x-text="contextPrompts[selectedType] || ''"></div>
+        <div class="prompt-text" x-ref="contextPrompt" x-html="highlight(contextPrompts[selectedType] || '')"></div>
+      </div>
+      <p class="safe-note">🔒 Use your work Copilot (signed in with your BSM account), and don't paste anything confidential you wouldn't put in an internal email.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(3)">Prompt is in. Next: Conversation →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Conversation -->
+  <div class="step" :class="{ active: step === 3 }">
+    <div class="step-badge">Step 3 · Conversation</div>
+    <h1>Conversation: let Copilot interview you</h1>
+    <p class="step-subtitle">This is a back-and-forth conversation, not a questionnaire. The goal is alignment: Copilot understands your situation and you feel understood.</p>
+
+    <div class="instruction">
+      <div class="instruction-num">1</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Answer its questions</div>
+        <div class="instruction-desc">Copilot will ask you up to 6 questions, one at a time. Answer briefly and specifically. Real details beat polished wording.</div>
       </div>
     </div>
 
     <div class="instruction">
-      <div class="instruction-num">3</div>
+      <div class="instruction-num">2</div>
       <div class="instruction-content">
-        <div class="instruction-title">Have a conversation with Copilot</div>
-        <div class="instruction-desc">This is a back-and-forth conversation, not a questionnaire. The goal is alignment: Copilot understands your situation and you feel understood. The conversation is done when either Copilot says it has enough information, or you feel confident it gets what you need. A good move: ask Copilot to "play back what you've understood so far."</div>
+        <div class="instruction-title">Check its playback</div>
+        <div class="instruction-desc">Copilot then plays back what it has understood. Confirm it, or correct anything that's off. Don't move on until it has your situation right.</div>
       </div>
     </div>
 
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Why this matters:</strong> Instead of guessing what you need from a single prompt, Copilot builds a shared understanding of your situation. That's the difference between using AI as a search engine and using it as a thinking partner. The playback is where you catch misalignment before it produces anything.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(4)">It gets it. Next: Refine →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Refine -->
+  <div class="step" :class="{ active: step === 4 }">
+    <div class="step-badge">Step 4 · Refine</div>
+    <h1>Refine: sharpen it together</h1>
+    <p class="step-subtitle">Don't rush to the output. Push back, challenge, and sharpen the thinking with Copilot first.</p>
+
     <div class="instruction">
-      <div class="instruction-num">4</div>
+      <div class="instruction-num">1</div>
       <div class="instruction-content">
-        <div class="instruction-title">Refine until you're happy</div>
-        <div class="instruction-desc">Don't rush to the next step. Push back, challenge, and sharpen the content together. Try questions like:</div>
+        <div class="instruction-title">Challenge the thinking</div>
+        <div class="instruction-desc">Try questions like:</div>
         <ul class="refine-questions">
           <li>How could this be better?</li>
           <li>Let's roast this content we've been creating together</li>
@@ -170,22 +214,25 @@
       </div>
     </div>
 
-    <div class="tip-box">
-      <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Why this matters:</strong> This conversation creates alignment between you and the AI. Instead of guessing what you need from a single prompt, Copilot builds a shared understanding of your situation. That's the difference between using AI as a search engine and using it as a thinking partner. When you ask it to play back its understanding, you can catch misalignment before it produces anything.</div>
+    <div class="instruction">
+      <div class="instruction-num">2</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Move on when the thinking is right</div>
+        <div class="instruction-desc">You're ready when you'd be comfortable defending the content, not just when the wording sounds good.</div>
+      </div>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(3)">Content is ready — Next →</button>
+      <button class="btn btn-secondary" @click="goTo(3)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(5)">Thinking is sharp. Next: Produce →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Generate -->
-  <div class="step" :class="{ active: step === 3 }">
-    <div class="step-badge">Step 3</div>
-    <h1>Generate your deliverable</h1>
-    <p class="step-subtitle">You've done the thinking together. Now tell Copilot to produce the asset you need.</p>
+  <!-- STEP 5: Produce -->
+  <div class="step" :class="{ active: step === 5 }">
+    <div class="step-badge">Step 5 · Produce</div>
+    <h1>Produce: get your deliverable</h1>
+    <p class="step-subtitle">Paste the prompt below. Copilot proposes a structure based on your conversation; agree it or change it, then Copilot produces the file.</p>
 
     <div class="prompt-section">
       <div class="prompt-label">Your second prompt</div>
@@ -194,7 +241,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         </button>
-        <div class="prompt-text" x-ref="generatePrompt" x-text="generatePrompts[selectedType] || ''"></div>
+        <div class="prompt-text" x-ref="generatePrompt" x-html="highlight(generatePrompts[selectedType] || '')"></div>
       </div>
     </div>
 
@@ -217,27 +264,27 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(4)" style="background: var(--green);">I've got my deliverable ✓</button>
+      <button class="btn btn-secondary" @click="goTo(4)">← Back</button>
+      <button class="btn btn-primary" @click="goTo(6)" style="background: var(--green);">I've got my deliverable ✓</button>
     </div>
   </div>
 
-  <!-- STEP 4: Success -->
-  <div class="step" :class="{ active: step === 4 }">
+  <!-- STEP 6: Success -->
+  <div class="step" :class="{ active: step === 6 }">
     <span class="success-icon">🎯</span>
     <h1>You just learned how to pilot Copilot.</h1>
     <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable. Here's what you did:</p>
 
     <ul class="success-checklist">
-      <li><strong>Set your context</strong> — you told Copilot what you need</li>
-      <li><strong>Had a conversation</strong> — you built alignment through back-and-forth</li>
-      <li><strong>Refined together</strong> — you challenged, sharpened, and improved the thinking</li>
-      <li><strong>Produced the asset</strong> — you got a real deliverable you can use</li>
+      <li><strong>Context</strong> — you told Copilot what you need, who it's for, and what good looks like</li>
+      <li><strong>Conversation</strong> — Copilot interviewed you and played back its understanding</li>
+      <li><strong>Refine</strong> — you challenged and sharpened the thinking together</li>
+      <li><strong>Produce</strong> — Copilot proposed a structure, you agreed it, and it produced the asset</li>
     </ul>
 
     <div class="tip-box">
       <span class="tip-icon">🔑</span>
-      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot in Teams, Word, Outlook, or PowerPoint — start by setting context, let it interview you, then ask for a specific output. You'll get dramatically better results than prompting from scratch.</div>
+      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot in Teams, Word, Outlook, or PowerPoint, follow the same four moves: <strong>Context, Conversation, Refine, Produce</strong>. You'll get dramatically better results than prompting from scratch.</div>
     </div>
 
     <div class="bonus-section" style="margin-top: 32px;">
@@ -252,6 +299,14 @@
 
 <script src="prompts.js"></script>
 <script src="script.js"></script>
+<script>
+  // Offline support: cache the page after first load (see sw.js). Network-first, so updates still arrive.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
 
 </body>
 </html>

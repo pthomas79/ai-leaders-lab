@@ -3,7 +3,7 @@ function lab() {
     step: 1,
     maxStep: 1,
     selectedType: null,
-    stepLabels: ['Choose Output', 'Set Context', 'Get Deliverable'],
+    stepLabels: ['Choose', 'Context', 'Conversation', 'Refine', 'Produce'],
 
     get isAgent() {
       return this.selectedType === 'researcher' || this.selectedType === 'analyst';
@@ -17,22 +17,22 @@ function lab() {
       {
         type: 'doc', number: '01', title: 'Strategic Document',
         desc: 'A Word-ready brief, proposal, or strategy plan with executive summary and recommendations.',
-        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>',
+        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00396F" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>',
       },
       {
         type: 'data', number: '02', title: 'Data-Backed Analysis',
         desc: 'An Excel-ready analysis with metrics, key findings, and structured data to support decisions.',
-        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
+        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00396F" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
       },
       {
         type: 'deck', number: '03', title: 'Presentation',
         desc: 'A PowerPoint-ready deck with slide content, talking points, and a clear narrative arc.',
-        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
+        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00396F" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
       },
       {
         type: 'comms', number: '04', title: 'Stakeholder Communication',
         desc: 'A polished email or memo for a change initiative, team update, or executive briefing.',
-        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
+        icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00396F" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
       },
       {
         type: 'researcher', number: '05', title: 'Deep Research Report',
@@ -53,6 +53,13 @@ function lab() {
     contextPrompts,
 
     generatePrompts,
+
+    // Escape the prompt text and wrap [placeholders] in a highlight span.
+    // Copying uses textContent, so the copied prompt is unchanged plain text.
+    highlight(text) {
+      const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return esc.replace(/\[[^\]]+\]/g, (m) => '<span class="fill-in">' + m + '</span>');
+    },
 
     goTo(s) {
       this.step = s;
