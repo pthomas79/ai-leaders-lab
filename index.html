@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BSM AI Leaders Lab - Copilot Practice Lab</title>
 <meta name="theme-color" content="#00203d">
 <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -29,8 +29,7 @@
 <!-- Hero Header -->
 <div class="hero">
   <div class="hero-inner">
-    <!-- TODO(Paris): add workshop date and city here, e.g. "BSM AI Leaders Lab · <date> · <city>" -->
-    <span class="hero-eyebrow">BSM AI Leaders Lab</span>
+    <span class="hero-eyebrow">Cochin, India · 3 November · 9am–1pm</span>
     <h2 class="hero-title">Copilot Practice Lab</h2>
     <div class="progress-container">
       <template x-for="i in 5" :key="i">
@@ -62,22 +61,26 @@
 <!-- Main Content -->
 <div class="main">
 
-  <!-- STEP 1: Choose Output -->
+  <!-- STEP 1: Choose -->
   <div class="step" :class="{ active: step === 1 }">
     <div class="step-badge">Step 1 · Choose</div>
     <h1>What do you want to create?</h1>
-    <p class="step-subtitle">You have <strong>6 options</strong> to choose from. Pick the type of deliverable you'd like to walk out with today. The method is the same for all of them: <strong>Context, Conversation, Refine, Produce</strong>.</p>
+    <p class="step-subtitle">Pick one. The method is the same for all: <strong>Context, Conversation, Refine, Produce</strong>.</p>
 
-    <div class="cards">
+    <div class="cards cards-compact">
       <template x-for="card in cards.slice(0, 4)" :key="card.type">
         <div class="card"
+             role="button" tabindex="0"
+             :aria-pressed="selectedType === card.type"
              :class="{ selected: selectedType === card.type }"
              @click="selectedType = card.type"
+             @keydown.enter.prevent="selectedType = card.type"
+             @keydown.space.prevent="selectedType = card.type"
              :data-type="card.type">
           <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
           <div class="card-body">
-            <div class="card-title" x-text="card.title"></div>
+            <div class="card-title"><span x-text="card.title"></span><span class="card-agent-tag" x-show="card.agentTag" x-text="card.agentTag"></span></div>
             <div class="card-desc" x-text="card.desc"></div>
           </div>
           <div class="card-number" x-text="card.number"></div>
@@ -85,20 +88,23 @@
       </template>
     </div>
 
-    <p style="font-size:13px; font-weight:600; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.5px; margin: 28px 0 12px;">Want to go further? Use a specialist agent</p>
+    <h2 class="section-label">Go further <span>Specialist Copilot agents</span></h2>
 
-    <div class="cards">
+    <div class="cards cards-compact">
       <template x-for="card in cards.slice(4)" :key="card.type">
         <div class="card"
+             role="button" tabindex="0"
+             :aria-pressed="selectedType === card.type"
              :class="{ selected: selectedType === card.type }"
              @click="selectedType = card.type"
+             @keydown.enter.prevent="selectedType = card.type"
+             @keydown.space.prevent="selectedType = card.type"
              :data-type="card.type">
           <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
           <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
           <div class="card-body">
-            <div class="card-title" x-text="card.title"></div>
+            <div class="card-title"><span x-text="card.title"></span><span class="card-agent-tag" x-show="card.agentTag" x-text="card.agentTag"></span></div>
             <div class="card-desc" x-text="card.desc"></div>
-            <span class="card-agent-tag" x-text="card.agentTag"></span>
           </div>
           <div class="card-number" x-text="card.number"></div>
         </div>
@@ -114,48 +120,44 @@
   <div class="step" :class="{ active: step === 2 }">
     <div class="step-badge">Step 2 · Context</div>
     <h1>Context: set the scene</h1>
-    <p class="step-subtitle">Copy the prompt below, paste it into Microsoft Copilot, and fill in the highlighted blanks. This gives Copilot the context it needs before it starts asking you questions.</p>
+    <p class="step-subtitle">Paste this into Copilot and fill in the highlighted <span class="fill-in-sample">[blanks]</span>.</p>
 
-    <div class="instruction">
-      <div class="instruction-num">1</div>
-      <div class="instruction-content">
-        <div class="instruction-title" x-text="isAgent ? 'Open the ' + agentName + ' agent' : 'Open Microsoft Copilot'"></div>
-        <div class="instruction-desc" x-text="isAgent
-          ? 'In Microsoft Teams or copilot.microsoft.com, look for the Agents section in the left sidebar. Select \'' + agentName + '\' to open a dedicated conversation with that agent. If you don\'t see it, check the disclaimer below.'
-          : 'Open Copilot in Microsoft Teams (look for the Copilot icon in the left sidebar), or go to copilot.microsoft.com in your browser. Use the same Copilot throughout — don\'t switch apps mid-conversation.'"></div>
+    <details class="more agent-warning" x-show="isAgent" style="display:none;">
+      <summary>⚠️ Uses the <span x-text="agentName"></span> agent: open it in Copilot first</summary>
+      <div class="more-body">
+        <p>In Copilot, open the <strong>Agents</strong> section in the left sidebar and select <strong x-text="agentName"></strong>, then paste the prompt there.</p>
+        <p><strong>Don't see it?</strong> Your IT admin needs to switch it on, or pick one of the four standard options for today. These agents are included in the standard Microsoft 365 Copilot licence. Both agents share a <strong>25-query monthly limit</strong>, so use them for tasks that really need deep reasoning.</p>
       </div>
-    </div>
-
-
-    <div class="instruction">
-      <div class="instruction-num">2</div>
-      <div class="instruction-content">
-        <div class="instruction-title">Copy this prompt and paste it in</div>
-        <div class="instruction-desc">Replace the highlighted <span class="fill-in-sample">[parts in brackets]</span> with your real information. Be specific: the more context you give, the better the output.</div>
-      </div>
-    </div>
-
-    <div class="agent-warning" x-show="isAgent" style="display:none;">
-      <strong>⚠️ This stream uses a specialist Copilot agent</strong> — it may not be enabled on your account yet.<br><br>
-      <strong>To check:</strong> Open Copilot in Teams or at copilot.microsoft.com. Look for an <strong>Agents</strong> section in the left sidebar. If you see <em x-text="agentName"></em> listed there, you're good to go.<br><br>
-      <strong>If you don't see it:</strong> Your IT admin needs to enable it, or choose one of the standard output types above for today's session. These agents are included in the standard M365 Copilot licence — they just need to be switched on. Note: both agents share a <strong>25-query monthly limit</strong>, so use them for tasks that really benefit from deep reasoning.
-    </div>
+    </details>
 
     <div class="prompt-section">
       <div class="prompt-label">Your first prompt</div>
       <div class="prompt-box">
-        <button class="copy-btn" @click="copy($refs.contextPrompt, $event)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copy
-        </button>
         <div class="prompt-text" x-ref="contextPrompt" x-html="highlight(contextPrompts[selectedType] || '')"></div>
+      </div>
+      <div class="prompt-actions">
+        <button class="btn btn-primary copy-open-btn" @click="copyAndOpen('contextPrompt')">
+          <span x-text="copiedKey === 'contextPrompt' ? 'Copied ✓ Opening Copilot…' : 'Copy & open Copilot ↗'"></span>
+        </button>
+        <button class="btn btn-secondary copy-only-btn" @click="copyOnly('contextPrompt')">
+          <span x-text="copiedKey === 'contextPrompt' ? 'Copied ✓' : 'Copy'"></span>
+        </button>
       </div>
       <p class="safe-note">🔒 Use your work Copilot (signed in with your BSM account), and don't paste anything confidential you wouldn't put in an internal email.</p>
     </div>
 
+    <details class="more">
+      <summary>Where to paste it</summary>
+      <div class="more-body">
+        <p><strong>Copy &amp; open Copilot</strong> copies the prompt and opens Microsoft 365 Copilot Chat (m365.cloud.microsoft/chat) in a new tab. Paste with Ctrl+V (Cmd+V on a Mac), or long-press and choose Paste on a phone.</p>
+        <p>You can also use Copilot in Microsoft Teams. Use the same Copilot throughout: don't switch apps mid-conversation.</p>
+        <p>Replace each highlighted <span class="fill-in-sample">[blank]</span> with your real information. The more specific, the better.</p>
+      </div>
+    </details>
+
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(1)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(3)">Prompt is in. Next: Conversation →</button>
+      <button class="btn btn-primary" @click="goTo(3)">Next: Conversation →</button>
     </div>
   </div>
 
@@ -163,32 +165,34 @@
   <div class="step" :class="{ active: step === 3 }">
     <div class="step-badge">Step 3 · Conversation</div>
     <h1>Conversation: let Copilot interview you</h1>
-    <p class="step-subtitle">This is a back-and-forth conversation, not a questionnaire. The goal is alignment: Copilot understands your situation and you feel understood.</p>
+    <p class="step-subtitle">Answer its questions (up to 6), then check its playback.</p>
 
     <div class="instruction">
       <div class="instruction-num">1</div>
       <div class="instruction-content">
-        <div class="instruction-title">Answer its questions</div>
-        <div class="instruction-desc">Copilot will ask you up to 6 questions, one at a time. Answer briefly and specifically. Real details beat polished wording.</div>
+        <div class="instruction-title">Answer briefly and specifically</div>
+        <div class="instruction-desc">Real details beat polished wording.</div>
       </div>
     </div>
 
     <div class="instruction">
       <div class="instruction-num">2</div>
       <div class="instruction-content">
-        <div class="instruction-title">Check its playback</div>
-        <div class="instruction-desc">Copilot then plays back what it has understood. Confirm it, or correct anything that's off. Don't move on until it has your situation right.</div>
+        <div class="instruction-title">Confirm or correct the playback</div>
+        <div class="instruction-desc">Don't move on until Copilot has your situation right.</div>
       </div>
     </div>
 
-    <div class="tip-box">
-      <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Why this matters:</strong> Instead of guessing what you need from a single prompt, Copilot builds a shared understanding of your situation. That's the difference between using AI as a search engine and using it as a thinking partner. The playback is where you catch misalignment before it produces anything.</div>
-    </div>
+    <details class="more">
+      <summary>Why this matters</summary>
+      <div class="more-body">
+        <p>Instead of guessing what you need from a single prompt, Copilot builds a shared understanding of your situation. That's the difference between using AI as a search engine and using it as a thinking partner. The playback is where you catch misalignment before it produces anything.</p>
+      </div>
+    </details>
 
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(2)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(4)">It gets it. Next: Refine →</button>
+      <button class="btn btn-primary" @click="goTo(4)">Next: Refine →</button>
     </div>
   </div>
 
@@ -196,35 +200,40 @@
   <div class="step" :class="{ active: step === 4 }">
     <div class="step-badge">Step 4 · Refine</div>
     <h1>Refine: sharpen it together</h1>
-    <p class="step-subtitle">Don't rush to the output. Push back, challenge, and sharpen the thinking with Copilot first.</p>
+    <p class="step-subtitle">Push back and challenge the thinking before you ask for the file.</p>
 
     <div class="instruction">
       <div class="instruction-num">1</div>
       <div class="instruction-content">
-        <div class="instruction-title">Challenge the thinking</div>
-        <div class="instruction-desc">Try questions like:</div>
-        <ul class="refine-questions">
-          <li>How could this be better?</li>
-          <li>Let's roast this content we've been creating together</li>
-          <li>What assumption in this is most likely to be wrong?</li>
-          <li>Now that we have the full picture, what are some tensions, gaps, or opportunities to simplify?</li>
-          <li>Thoughts?</li>
-          <li>What else should I consider?</li>
-        </ul>
+        <div class="instruction-title">Ask Copilot:</div>
+        <div class="instruction-desc refine-lead">“What assumption in this is most likely to be wrong?”</div>
       </div>
     </div>
 
     <div class="instruction">
       <div class="instruction-num">2</div>
       <div class="instruction-content">
-        <div class="instruction-title">Move on when the thinking is right</div>
-        <div class="instruction-desc">You're ready when you'd be comfortable defending the content, not just when the wording sounds good.</div>
+        <div class="instruction-title">Move on when you'd defend it</div>
+        <div class="instruction-desc">Ready means the thinking is right, not just the wording.</div>
       </div>
     </div>
 
+    <details class="more">
+      <summary>More questions to try</summary>
+      <div class="more-body">
+        <ul class="refine-questions">
+          <li>How could this be better?</li>
+          <li>Let's roast this content we've been creating together</li>
+          <li>Now that we have the full picture, what are some tensions, gaps, or opportunities to simplify?</li>
+          <li>Thoughts?</li>
+          <li>What else should I consider?</li>
+        </ul>
+      </div>
+    </details>
+
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(3)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(5)">Thinking is sharp. Next: Produce →</button>
+      <button class="btn btn-primary" @click="goTo(5)">Next: Produce →</button>
     </div>
   </div>
 
@@ -232,40 +241,50 @@
   <div class="step" :class="{ active: step === 5 }">
     <div class="step-badge">Step 5 · Produce</div>
     <h1>Produce: get your deliverable</h1>
-    <p class="step-subtitle">Paste the prompt below. Copilot proposes a structure based on your conversation; agree it or change it, then Copilot produces the file.</p>
+    <p class="step-subtitle">Paste this. Copilot proposes a structure; agree or change it, then it produces the file.</p>
 
     <div class="prompt-section">
       <div class="prompt-label">Your second prompt</div>
       <div class="prompt-box">
-        <button class="copy-btn" @click="copy($refs.generatePrompt, $event)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copy
-        </button>
         <div class="prompt-text" x-ref="generatePrompt" x-html="highlight(generatePrompts[selectedType] || '')"></div>
       </div>
-    </div>
-
-    <div class="tip-box">
-      <span class="tip-icon">💡</span>
-      <div class="tip-text"><strong>Not perfect?</strong> That's expected. You have two options: keep refining in the chat ("Make the tone more formal"), or open the document directly in Word/Excel/PowerPoint and use Copilot there to edit in place. You can also ask <strong>"How can we make this better?"</strong> to get suggestions you haven't thought of.</div>
-    </div>
-
-    <div class="bonus-section">
-      <div class="bonus-badge">⚡ Bonus Prompt</div>
-      <div class="bonus-title">Make it better</div>
-      <div class="bonus-desc">Once you have your document, use this to stress-test the output before you share it.</div>
-      <div class="prompt-box" style="background: rgba(0,0,0,0.3);">
-        <button class="copy-btn" @click="copy($refs.bonusPrompt, $event)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copy
+      <div class="prompt-actions">
+        <button class="btn btn-primary copy-open-btn" @click="copyAndOpen('generatePrompt')">
+          <span x-text="copiedKey === 'generatePrompt' ? 'Copied ✓ Opening Copilot…' : 'Copy & open Copilot ↗'"></span>
         </button>
-        <div class="prompt-text" x-ref="bonusPrompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement.</div>
+        <button class="btn btn-secondary copy-only-btn" @click="copyOnly('generatePrompt')">
+          <span x-text="copiedKey === 'generatePrompt' ? 'Copied ✓' : 'Copy'"></span>
+        </button>
       </div>
     </div>
+
+    <details class="more">
+      <summary>Not perfect?</summary>
+      <div class="more-body">
+        <p>That's expected. Keep refining in the chat ("Make the tone more formal"), or open the file in Word, Excel or PowerPoint and use Copilot there to edit in place. You can also ask <strong>"How can we make this better?"</strong></p>
+      </div>
+    </details>
+
+    <details class="more">
+      <summary>⚡ Bonus prompt: stress-test it before you share</summary>
+      <div class="more-body">
+        <div class="prompt-box prompt-box-small">
+          <div class="prompt-text" x-ref="bonusPrompt">Review what you just created with a critical eye. What's missing? What could be stronger? What would a skeptical executive push back on? Give me your top 3 suggestions for improvement.</div>
+        </div>
+      <div class="prompt-actions">
+        <button class="btn btn-primary copy-open-btn" @click="copyAndOpen('bonusPrompt')">
+          <span x-text="copiedKey === 'bonusPrompt' ? 'Copied ✓ Opening Copilot…' : 'Copy & open Copilot ↗'"></span>
+        </button>
+        <button class="btn btn-secondary copy-only-btn" @click="copyOnly('bonusPrompt')">
+          <span x-text="copiedKey === 'bonusPrompt' ? 'Copied ✓' : 'Copy'"></span>
+        </button>
+      </div>
+      </div>
+    </details>
 
     <div class="btn-row">
       <button class="btn btn-secondary" @click="goTo(4)">← Back</button>
-      <button class="btn btn-primary" @click="goTo(6)" style="background: var(--green);">I've got my deliverable ✓</button>
+      <button class="btn btn-primary btn-done" @click="goTo(6)">I've got my deliverable ✓</button>
     </div>
   </div>
 
@@ -273,7 +292,7 @@
   <div class="step" :class="{ active: step === 6 }">
     <span class="success-icon">🎯</span>
     <h1>You just learned how to pilot Copilot.</h1>
-    <p class="step-subtitle">In under 15 minutes, you went from a blank screen to a real deliverable. Here's what you did:</p>
+    <p class="step-subtitle">From a blank screen to a real deliverable. Here's what you did:</p>
 
     <ul class="success-checklist">
       <li><strong>Context</strong> — you told Copilot what you need, who it's for, and what good looks like</li>
@@ -284,15 +303,35 @@
 
     <div class="tip-box">
       <span class="tip-icon">🔑</span>
-      <div class="tip-text"><strong>The method you just learned applies everywhere.</strong> Next time you use Copilot in Teams, Word, Outlook, or PowerPoint, follow the same four moves: <strong>Context, Conversation, Refine, Produce</strong>. You'll get dramatically better results than prompting from scratch.</div>
+      <div class="tip-text"><strong>Use the same four moves everywhere:</strong> Context, Conversation, Refine, Produce. In Teams, Word, Outlook or PowerPoint.</div>
     </div>
 
-    <div class="bonus-section" style="margin-top: 32px;">
-      <div class="bonus-badge">🧠 Pro Move</div>
-      <div class="bonus-title">Save a summary so you can pick up where you left off</div>
-      <div class="bonus-desc">Before you close the conversation, ask Copilot: "Summarise this conversation and its outcomes so I can use it as a starting point next time." Save that summary in a Word document or in OneNote. Next time you start a new Copilot session on this topic, just drop that document into the chat. Copilot will pick up where you left off, with all the context from today. Think of it as a briefing note for your future self.</div>
+    <details class="more">
+      <summary>🧠 Pro move: save a summary for next time</summary>
+      <div class="more-body">
+        <p>Before you close the conversation, ask Copilot: "Summarise this conversation and its outcomes so I can use it as a starting point next time." Save that summary in a Word document or in OneNote. Next time, drop that document into the chat and Copilot picks up where you left off.</p>
+      </div>
+    </details>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" @click="goTo(5)">← Back</button>
     </div>
   </div>
+</div>
+
+<!-- Mobile sticky action bar (shown under 768px via CSS) -->
+<nav class="mobile-bar" x-show="step <= 5" aria-label="Step navigation">
+  <button class="mb-btn mb-back" x-show="step > 1" @click="goTo(step - 1)" aria-label="Back">← Back</button>
+  <button class="mb-btn mb-copy" x-show="currentPromptRef" @click="copyOnly(currentPromptRef)"
+          x-text="copiedKey && copiedKey === currentPromptRef ? 'Copied ✓' : 'Copy'"></button>
+  <button class="mb-btn mb-next" :class="{ 'mb-done': step === 5 }" :disabled="step === 1 && !selectedType"
+          @click="next()" x-text="nextLabels[step - 1]"></button>
+</nav>
+
+<!-- Copy / open feedback -->
+<div class="toast" x-show="toast.show" style="display:none;" role="status" aria-live="polite">
+  <span x-text="toast.msg"></span>
+  <a x-show="toast.link" :href="copilotUrl" target="_blank" rel="noopener">Open Copilot ↗</a>
 </div>
 
 </div>
