@@ -3,7 +3,7 @@
 // falling back to the cache only when the network fails or is too slow.
 // So whenever the network works, users get the latest deploy; the cache is
 // just an offline safety net. Bump VERSION on releases to drop old caches.
-const VERSION = 'bsm-v1-2026-10-21';
+const VERSION = 'bsm-v2-2026-10-21';
 const CACHE = 'ailab-' + VERSION;
 const NETWORK_TIMEOUT_MS = 4000;
 const PRECACHE = [
