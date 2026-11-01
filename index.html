@@ -17,10 +17,12 @@
 <!-- Header -->
 <div class="header">
   <div class="header-left">
-    <img src="assets/bsm-logo-white.svg"
-         alt="BSM – Bernhard Schulte Shipmanagement" class="client-logo"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <span class="client-logo-fallback" style="display:none;">BSM</span>
+    <button type="button" class="logo-btn" aria-label="Back to start" title="Back to start" @click="startOver()">
+      <img src="assets/bsm-logo-white.svg"
+           alt="" class="client-logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span class="client-logo-fallback" style="display:none;">BSM</span>
+    </button>
     <div class="header-divider"></div>
     <span class="header-title">BSM AI Leaders Lab - Copilot Practice Lab</span>
   </div>
@@ -88,28 +90,36 @@
       </template>
     </div>
 
-    <h2 class="section-label">Go further <span>Specialist Copilot agents</span></h2>
-
-    <div class="cards cards-compact">
-      <template x-for="card in cards.slice(4)" :key="card.type">
-        <div class="card"
-             role="button" tabindex="0"
-             :aria-pressed="selectedType === card.type"
-             :class="{ selected: selectedType === card.type }"
-             @click="selectedType = card.type"
-             @keydown.enter.prevent="selectedType = card.type"
-             @keydown.space.prevent="selectedType = card.type"
-             :data-type="card.type">
-          <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
-          <div class="card-body">
-            <div class="card-title"><span x-text="card.title"></span><span class="card-agent-tag" x-show="card.agentTag" x-text="card.agentTag"></span></div>
-            <div class="card-desc" x-text="card.desc"></div>
-          </div>
-          <div class="card-number" x-text="card.number"></div>
+    <details class="more go-further">
+      <summary>
+        <span class="gf-text">
+          <span class="gf-title">Optional: Go further with specialist Copilot agents</span>
+          <span class="gf-sub">Only if your Copilot has the Researcher or Analyst agents.</span>
+        </span>
+      </summary>
+      <div class="go-further-body">
+        <div class="cards cards-compact">
+          <template x-for="card in cards.slice(4)" :key="card.type">
+            <div class="card"
+                 role="button" tabindex="0"
+                 :aria-pressed="selectedType === card.type"
+                 :class="{ selected: selectedType === card.type }"
+                 @click="selectedType = card.type"
+                 @keydown.enter.prevent="selectedType = card.type"
+                 @keydown.space.prevent="selectedType = card.type"
+                 :data-type="card.type">
+              <div class="card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="card-icon-wrap" :style="card.iconBg ? 'background:' + card.iconBg : ''" x-html="card.icon"></div>
+              <div class="card-body">
+                <div class="card-title"><span x-text="card.title"></span><span class="card-agent-tag" x-show="card.agentTag" x-text="card.agentTag"></span></div>
+                <div class="card-desc" x-text="card.desc"></div>
+              </div>
+              <div class="card-number" x-text="card.number"></div>
+            </div>
+          </template>
         </div>
-      </template>
-    </div>
+      </div>
+    </details>
 
     <div class="btn-row">
       <button class="btn btn-primary" :disabled="!selectedType" @click="goTo(2)">Continue →</button>
@@ -143,7 +153,7 @@
           <span x-text="copiedKey === 'contextPrompt' ? 'Copied ✓' : 'Copy'"></span>
         </button>
       </div>
-      <p class="safe-note">🔒 Use your work Copilot (signed in with your BSM account), and don't paste anything confidential you wouldn't put in an internal email.</p>
+      <p class="safe-note">🔒 Use your work Copilot, the BSM-approved tool, signed in with your BSM account. Keep crew, customer and commercially sensitive details out unless you're sure it's allowed.</p>
     </div>
 
     <details class="more">
@@ -293,6 +303,8 @@
     <span class="success-icon">🎯</span>
     <h1>You just learned how to pilot Copilot.</h1>
     <p class="step-subtitle">From a blank screen to a real deliverable. Here's what you did:</p>
+
+    <p class="own-output"><strong>You own the final output. Review it before you use it.</strong></p>
 
     <ul class="success-checklist">
       <li><strong>Context</strong> — you told Copilot what you need, who it's for, and what good looks like</li>

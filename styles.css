@@ -787,3 +787,25 @@ details.agent-warning .more-body { color: #92400e; }
   .main { padding-top: 20px; }
   .step h1 { font-size: 23px; }
 }
+
+
+/* ===== v5: logo as home button, optional Go further, finish line ===== */
+.logo-btn {
+  background: none; border: 0; padding: 6px 4px; margin: -6px -4px;
+  display: flex; align-items: center; cursor: pointer; border-radius: 8px;
+  font: inherit; color: inherit; -webkit-tap-highlight-color: transparent;
+}
+.logo-btn:hover { opacity: 0.85; }
+.logo-btn:focus-visible { outline: 3px solid var(--brand-sky); outline-offset: 2px; }
+
+details.go-further { margin-top: 24px; }
+details.go-further > summary { align-items: center; }
+.gf-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gf-title { font-size: 14px; font-weight: 700; color: var(--brand); }
+.gf-sub { font-size: 13px; font-weight: 500; color: var(--gray-500); }
+.go-further-body { padding: 4px 12px 14px; }
+
+.own-output {
+  margin: 0 0 20px; padding: 14px 16px; font-size: 16px; line-height: 1.5; color: var(--navy);
+  background: var(--brand-tint); border-left: 4px solid var(--brand); border-radius: 8px;
+}
