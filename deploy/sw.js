@@ -6,7 +6,7 @@
 // On activate it deletes every older 'ailab-' cache, including pre-gate caches
 // that held plaintext index.html / prompts.js / script.js.
 // Strategy: NETWORK-FIRST with a short timeout, cache only as fallback.
-const VERSION = 'bsm-v4-gate';
+const VERSION = 'bsm-v5-gate';
 const CACHE = 'ailab-' + VERSION;
 const NETWORK_TIMEOUT_MS = 4000;
 const PRECACHE = [
