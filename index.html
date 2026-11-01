@@ -24,9 +24,11 @@
       <span class="client-logo-fallback" style="display:none;">BSM</span>
     </button>
     <div class="header-divider"></div>
-    <span class="header-title">BSM AI Leaders Lab - Copilot Practice Lab</span>
+    <span class="header-title" x-text="view === 'lovable' ? 'BSM AI Leaders Lab - Vibe Coding Lab' : 'BSM AI Leaders Lab - Copilot Practice Lab'">BSM AI Leaders Lab - Copilot Practice Lab</span>
   </div>
 </div>
+
+<div id="lab-view" x-show="view === 'lab'">
 
 <!-- Hero Header -->
 <div class="hero">
@@ -340,10 +342,100 @@
           @click="next()" x-text="nextLabels[step - 1]"></button>
 </nav>
 
+<!-- Footer: quiet entry point to the Vibe Coding Lab -->
+<footer class="app-footer">
+  <button type="button" class="footer-link" title="Vibe Coding Lab: build a working tool in Lovable" @click="openLovable()">Lovable</button>
+</footer>
+
+</div>
+
+<!-- ===== VIBE CODING LAB (Lovable), in-page view ===== -->
+<div id="lovable-view" x-show="view === 'lovable'" style="display:none;">
+
+  <div class="hero lov-hero">
+    <div class="hero-inner">
+      <span class="hero-eyebrow">Cochin, India · 3 November</span>
+      <h2 class="hero-title">Vibe Coding Lab</h2>
+      <p class="lov-subline">Build a working tool in Lovable</p>
+    </div>
+  </div>
+
+  <div class="main lov-main">
+
+    <!-- Landing: pick one of four -->
+    <section x-show="lovIndex === null" aria-labelledby="lov-landing-title">
+      <button type="button" class="lov-back" @click="backToLab()">← Back to the Copilot lab</button>
+      <h1 id="lov-landing-title" tabindex="-1" class="lov-h1" x-ref="lovLandingTitle">Pick a challenge to turn into a tool</h1>
+      <p class="step-subtitle">Choose one area. You'll see what you could build, how it applies on board and ashore, and a ready-to-copy starter prompt for Lovable.</p>
+
+      <div class="lov-safe" role="note">
+        <p>🔒 Use made-up sample data only. No real CVs, appraisals or crew records.</p>
+        <p>Anything you build here is a prototype. Real use goes through BSM's AI risk assessment.</p>
+      </div>
+
+      <div class="lov-grid">
+        <template x-for="(c, i) in lovableClusters" :key="c.key">
+          <button type="button" class="lov-cluster-btn" :data-cluster="c.key" @click="openCluster(i)">
+            <span class="lov-cluster-num" x-text="'0' + (i + 1)"></span>
+            <span class="lov-cluster-name" x-text="c.title"></span>
+            <span class="lov-cluster-arrow" aria-hidden="true">→</span>
+          </button>
+        </template>
+      </div>
+    </section>
+
+    <!-- Detail: one cluster -->
+    <section x-show="lovIndex !== null" style="display:none;" aria-labelledby="lov-detail-title">
+      <button type="button" class="lov-back" @click="backToFour()">← Back to the four</button>
+      <h1 id="lov-detail-title" tabindex="-1" class="lov-h1" x-ref="lovDetailTitle" x-text="lov ? lov.title : ''"></h1>
+
+      <div class="lov-block lov-build">
+        <h2 class="lov-h2">What you could build</h2>
+        <p class="lov-build-text" x-text="lov ? lov.build : ''"></p>
+      </div>
+
+      <div class="lov-block">
+        <h2 class="lov-h2">Use cases</h2>
+        <div class="lov-cols">
+          <div class="lov-uc lov-marine">
+            <h3>Marine</h3>
+            <p x-text="lov ? lov.marine : ''"></p>
+          </div>
+          <div class="lov-uc lov-shore">
+            <h3>Shore</h3>
+            <p x-text="lov ? lov.shore : ''"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lov-block prompt-section">
+        <h2 class="lov-h2">Starter prompt</h2>
+        <div class="prompt-box">
+          <div class="prompt-text" id="lov-prompt" x-ref="lovPrompt" x-text="lov ? lov.prompt : ''"></div>
+        </div>
+        <div class="prompt-actions">
+          <button type="button" class="btn btn-primary copy-open-btn" @click="copyAndOpen('lovPrompt', 'lovable')">
+            <span x-text="copiedKey === 'lovPrompt' ? 'Copied ✓ Opening Lovable…' : 'Copy & open Lovable ↗'"></span>
+          </button>
+          <button type="button" class="btn btn-secondary copy-only-btn" @click="copyOnly('lovPrompt', 'lovable')">
+            <span x-text="copiedKey === 'lovPrompt' ? 'Copied ✓' : 'Copy'"></span>
+          </button>
+        </div>
+        <p class="safe-note lov-note">🔒 Made-up sample data only. This is a prototype: real use goes through BSM's AI risk assessment.</p>
+      </div>
+
+      <div class="lov-foot-nav">
+        <button type="button" class="btn btn-secondary" @click="backToFour()">← Back to the four</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 <!-- Copy / open feedback -->
 <div class="toast" x-show="toast.show" style="display:none;" role="status" aria-live="polite">
   <span x-text="toast.msg"></span>
-  <a x-show="toast.link" :href="copilotUrl" target="_blank" rel="noopener">Open Copilot ↗</a>
+  <a x-show="toast.link" :href="toast.url || copilotUrl" target="_blank" rel="noopener" x-text="toast.linkText || 'Open Copilot ↗'">Open Copilot ↗</a>
 </div>
 
 </div>
