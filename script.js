@@ -71,9 +71,24 @@ function lab() {
     goTo(s) {
       if (s < 1) return;
       // Fold any expanded sections again when starting over, so each option opens compact.
-      if (s === 1) document.querySelectorAll('details.more').forEach((d) => { d.open = false; });
+      if (s === 1) document.querySelectorAll('details.more').forEach((d) => {
+        // Keep the optional agents section open if an agent card is the current choice.
+        if (d.classList.contains('go-further') && this.isAgent) return;
+        d.open = false;
+      });
       this.step = s;
       if (s > this.maxStep) this.maxStep = s;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    // Logo / "Back to start": reset the app in place (no navigation or reload, so the password gate does not return).
+    startOver() {
+      this.step = 1;
+      this.maxStep = 1;
+      this.selectedType = null;
+      this.copiedKey = null;
+      this.toast.show = false;
+      document.querySelectorAll('details.more').forEach((d) => { d.open = false; });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
