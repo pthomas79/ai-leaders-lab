@@ -1,5 +1,9 @@
 function lab() {
   return {
+    view: 'lab',          // 'lab' (Copilot) or 'lovable' (Vibe Coding Lab); in-page, nothing stored
+    lovIndex: null,       // null = the four buttons, 0-3 = a cluster detail view
+    lovableClusters,
+    lovableUrl: 'https://lovable.dev',
     step: 1,
     maxStep: 1,
     selectedType: null,
@@ -83,6 +87,8 @@ function lab() {
 
     // Logo / "Back to start": reset the app in place (no navigation or reload, so the password gate does not return).
     startOver() {
+      this.view = 'lab';
+      this.lovIndex = null;
       this.step = 1;
       this.maxStep = 1;
       this.selectedType = null;
@@ -91,6 +97,20 @@ function lab() {
       document.querySelectorAll('details.more').forEach((d) => { d.open = false; });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
+
+    // ---- Vibe Coding Lab ----
+    get lov() { return this.lovIndex === null ? null : this.lovableClusters[this.lovIndex]; },
+
+    _lovTop(ref) {
+      this.copiedKey = null;
+      this.toast.show = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.$nextTick(() => { const el = this.$refs[ref]; if (el) el.focus({ preventScroll: true }); });
+    },
+    openLovable() { this.view = 'lovable'; this.lovIndex = null; this._lovTop('lovLandingTitle'); },
+    backToLab() { this.view = 'lab'; this.lovIndex = null; window.scrollTo({ top: 0, behavior: 'smooth' }); },
+    openCluster(i) { this.lovIndex = i; this._lovTop('lovDetailTitle'); },
+    backToFour() { this.lovIndex = null; this._lovTop('lovLandingTitle'); },
 
     next() {
       if (this.step === 1 && !this.selectedType) return;
@@ -131,36 +151,41 @@ function lab() {
       setTimeout(() => { if (this.copiedKey === key) this.copiedKey = null; }, 2000);
     },
 
-    showToast(msg, link) {
-      this.toast = { show: true, msg, link: !!link };
+    showToast(msg, link, url, linkText) {
+      this.toast = { show: true, msg, link: !!link, url: url || '', linkText: linkText || '' };
       clearTimeout(this._toastTimer);
       this._toastTimer = setTimeout(() => { this.toast.show = false; }, link ? 9000 : 4500);
     },
 
-    copyOnly(ref) {
+    copyOnly(ref, tool) {
       const el = this.$refs[ref];
       if (!el) return;
+      const name = tool === 'lovable' ? 'Lovable' : 'Copilot';
       this.writeClipboard(el.textContent)
-        .then(() => { this.flash(ref); this.showToast('Prompt copied. Paste it into Copilot.', false); })
+        .then(() => { this.flash(ref); this.showToast('Prompt copied. Paste it into ' + name + '.', false); })
         .catch(() => this.showToast("Couldn't copy automatically. Select the prompt text and copy it.", false));
     },
 
-    copyAndOpen(ref) {
+    copyAndOpen(ref, tool) {
       const el = this.$refs[ref];
       if (!el) return;
+      const lovable = tool === 'lovable';
+      const name = lovable ? 'Lovable' : 'Copilot';
+      const url = lovable ? this.lovableUrl : this.copilotUrl;
+      const linkText = 'Open ' + name + ' \u2197';
       const copying = this.writeClipboard(el.textContent); // starts within the click, before window.open
       let win = null;
-      try { win = window.open(this.copilotUrl, '_blank'); } catch (e) { win = null; }
+      try { win = window.open(url, '_blank'); } catch (e) { win = null; }
       if (win) { try { win.opener = null; } catch (e) { /* ignore */ } }
       copying
         .then(() => {
           this.flash(ref);
-          if (win) this.showToast('Prompt copied. Copilot is opening in a new tab: paste it there.', false);
-          else this.showToast('Prompt copied. Your browser blocked the new tab, so open Copilot here:', true);
+          if (win) this.showToast('Prompt copied. ' + name + ' is opening in a new tab: paste it there.', false);
+          else this.showToast('Prompt copied. Your browser blocked the new tab, so open ' + name + ' here:', true, url, linkText);
         })
         .catch(() => {
-          this.showToast(win ? "Copilot opened, but the prompt wasn't copied. Use Copy, then paste."
-                             : "Couldn't copy or open a new tab. Use Copy, then open Copilot here:", !win);
+          this.showToast(win ? name + " opened, but the prompt wasn't copied. Use Copy, then paste."
+                             : "Couldn't copy or open a new tab. Use Copy, then open " + name + " here:", !win, url, linkText);
         });
     },
   };

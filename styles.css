@@ -809,3 +809,80 @@ details.go-further > summary { align-items: center; }
   margin: 0 0 20px; padding: 14px 16px; font-size: 16px; line-height: 1.5; color: var(--navy);
   background: var(--brand-tint); border-left: 4px solid var(--brand); border-radius: 8px;
 }
+
+
+/* ===== v6: Vibe Coding Lab (Lovable) view ===== */
+/* The footer now carries the bottom spacing, so tighten .main's own bottom padding in the lab view. */
+#lab-view .main { padding-bottom: 24px; }
+.app-footer {
+  max-width: 720px; margin: 0 auto; padding: 8px 24px 40px; text-align: center;
+}
+.footer-link {
+  background: none; border: 0; cursor: pointer; font: 500 12px var(--font-sans);
+  color: var(--gray-500); opacity: 0.8; text-decoration: underline; text-underline-offset: 3px;
+  min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 8px;
+}
+.footer-link:hover { opacity: 1; color: var(--brand); }
+.footer-link:focus-visible { outline: 3px solid var(--brand-accent); outline-offset: 2px; opacity: 1; }
+
+.lov-hero .hero-inner { padding-bottom: 4px; }
+.lov-subline { margin-top: 6px; font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.9); }
+.lov-main { padding-bottom: 72px; }
+.lov-h1 { font-size: 30px; font-weight: 700; color: var(--navy); margin: 8px 0 12px; letter-spacing: -0.4px; line-height: 1.2; }
+.lov-h1:focus { outline: none; }
+.lov-h2 { font-size: 13px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
+.lov-back {
+  background: none; border: 0; cursor: pointer; font: 600 14px var(--font-sans); color: var(--brand);
+  min-height: 44px; padding: 0 12px 0 0; display: inline-flex; align-items: center; border-radius: 8px;
+}
+.lov-back:hover { text-decoration: underline; }
+.lov-back:focus-visible, .lov-cluster-btn:focus-visible { outline: 3px solid var(--brand-accent); outline-offset: 2px; }
+
+.lov-safe {
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px;
+  font-size: 14px; line-height: 1.55; color: var(--gray-700);
+}
+.lov-safe p + p { margin-top: 6px; }
+
+.lov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lov-cluster-btn {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 18px;
+  min-height: 132px; padding: 20px 22px; text-align: left; cursor: pointer;
+  background: var(--brand); color: var(--white); border: 0; border-radius: 14px;
+  font-family: var(--font-sans); box-shadow: var(--shadow); transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.lov-cluster-btn:hover { background: var(--brand-dark); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.lov-cluster-num { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--brand-sky); }
+.lov-cluster-name { font-size: 19px; font-weight: 700; line-height: 1.25; }
+.lov-cluster-arrow { align-self: flex-end; font-size: 20px; color: var(--brand-sky); margin-top: -8px; }
+
+.lov-block { margin-top: 28px; }
+.lov-build {
+  background: var(--brand-tint); border-left: 5px solid var(--brand); border-radius: 12px; padding: 20px 22px;
+}
+.lov-build .lov-h2 { color: var(--brand); }
+.lov-build-text { font-size: 20px; line-height: 1.5; font-weight: 600; color: var(--navy); }
+.lov-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lov-uc { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px 18px; }
+.lov-uc h3 { font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 6px; }
+.lov-marine { border-top: 4px solid var(--brand); }
+.lov-shore { border-top: 4px solid var(--brand-accent); }
+.lov-uc p { font-size: 15px; line-height: 1.55; color: var(--gray-700); }
+.lov-note { font-size: 13px; }
+.lov-foot-nav { margin-top: 32px; }
+
+@media (max-width: 767px) {
+  .app-footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  #lab-view .main { padding-bottom: 8px; }
+  .lov-main { padding-bottom: 48px; }
+}
+@media (max-width: 640px) {
+  .lov-grid, .lov-cols { grid-template-columns: 1fr; }
+  .lov-cluster-btn { min-height: 84px; flex-direction: row; align-items: center; gap: 14px; padding: 16px 18px; }
+  .lov-cluster-name { flex: 1; font-size: 17px; }
+  .lov-cluster-arrow { align-self: center; margin-top: 0; }
+  .lov-h1 { font-size: 24px; }
+  .lov-build-text { font-size: 18px; }
+  .lov-subline { font-size: 16px; }
+  .lov-block .prompt-actions .btn { flex: 1 1 auto; justify-content: center; }
+}
