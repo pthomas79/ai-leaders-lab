@@ -50,9 +50,9 @@ const generatePrompts = {
 };
 
 
-// ---- Vibe Coding Lab (Lovable). Fake data only; generic enough for any team. ----
-const LOV_TAIL = `Before you build anything, ask me up to 5 clarifying questions, one at a time. Then build a simple first version with clearly fake sample data, a clean mobile-friendly layout, no login and no real data connections.`;
-
+// ---- Vibe Coding Lab (Lovable). Four challenge areas, each with a marine and a shore
+// case study. These are directions to choose from, not prompts to copy.
+// Fake data only; generic enough for any team.
 const lovableClusters = [
   {
     key: 'talent',
@@ -60,11 +60,6 @@ const lovableClusters = [
     build: 'A tool where you upload a CV and get a match score against a role, with a gap summary and suggested interview questions.',
     marine: 'Match CVs already in the pool to crew requirements, generate officer introductions and record interview notes in PAL.',
     shore: 'Shortlist candidates against a job description, match internal mobility candidates, and produce interview summaries and scorecards.',
-    prompt: `What I need: a simple web tool where I upload or paste a sample CV, pick a role, and get a match score, a short summary of the gaps and suggested interview questions.
-Who it's for: recruiters and hiring managers on my team.
-What good looks like: one clear screen where I can choose a role, add a CV and see the score, gaps and questions in under a minute.
-
-${LOV_TAIL}`,
   },
   {
     key: 'performance',
@@ -72,11 +67,6 @@ ${LOV_TAIL}`,
     build: 'A performance dashboard that turns appraisal inputs into strengths, development areas and a readiness indicator.',
     marine: 'Crew performance insights and promotion readiness recommendations.',
     shore: 'Appraisal summaries, tracking objectives and identifying who is ready for promotion.',
-    prompt: `What I need: a simple performance dashboard where I enter sample appraisal inputs for a person and get their strengths, development areas and a promotion readiness indicator.
-Who it's for: line managers and HR partners on my team.
-What good looks like: a clear one-page view per person that I could use to prepare for a performance conversation.
-
-${LOV_TAIL}`,
   },
   {
     key: 'compliance',
@@ -84,11 +74,6 @@ ${LOV_TAIL}`,
     build: 'A compliance tracker with expiry alerts and recommended training paths. The ideas could later feed into the LMS/CMS.',
     marine: "Track certificate expiry and check that crew meet mandatory training requirements before they're assigned to a vessel.",
     shore: 'Track mandatory training completion, policy acknowledgements and overdue modules.',
-    prompt: `What I need: a simple compliance tracker that lists sample certificates and mandatory training, flags what is expired or expiring soon, and suggests the next training to complete.
-Who it's for: training and compliance teams, and the managers who rely on them.
-What good looks like: I can see at a glance who is compliant, who is not, and what to do next.
-
-${LOV_TAIL}`,
   },
   {
     key: 'workforce',
@@ -96,10 +81,5 @@ ${LOV_TAIL}`,
     build: 'A risk dashboard that flags people at risk of leaving, and upcoming gaps in coverage.',
     marine: 'Crew change and deployment status, predicting relief risk and flagging crew retention risks.',
     shore: 'Predicting attrition risk, spotting workforce gaps and tracking vacancies against headcount.',
-    prompt: `What I need: a simple workforce dashboard that flags sample people at risk of leaving and shows upcoming gaps in coverage, with vacancies tracked against headcount.
-Who it's for: workforce planners and people managers.
-What good looks like: I can spot the biggest risks and gaps for the next few months and see what to act on first.
-
-${LOV_TAIL}`,
   },
 ];

@@ -1,9 +1,9 @@
 function lab() {
   return {
     view: 'lab',          // 'lab' (Copilot) or 'lovable' (Vibe Coding Lab); in-page, nothing stored
-    lovIndex: null,       // null = the four buttons, 0-3 = a cluster detail view
+    lovIndex: null,       // null = the four challenge areas; 0-3 = one area
+    lovSide: null,        // null until marine or shore is picked inside that area
     lovableClusters,
-    lovableUrl: 'https://lovable.dev',
     step: 1,
     maxStep: 1,
     selectedType: null,
@@ -89,6 +89,7 @@ function lab() {
     startOver() {
       this.view = 'lab';
       this.lovIndex = null;
+      this.lovSide = null;
       this.step = 1;
       this.maxStep = 1;
       this.selectedType = null;
@@ -100,6 +101,15 @@ function lab() {
 
     // ---- Vibe Coding Lab ----
     get lov() { return this.lovIndex === null ? null : this.lovableClusters[this.lovIndex]; },
+    get lovSideLabel() {
+      if (this.lovSide === 'marine') return 'Marine';
+      if (this.lovSide === 'shore') return 'Shore';
+      return '';
+    },
+    get lovCase() {
+      if (!this.lov || (this.lovSide !== 'marine' && this.lovSide !== 'shore')) return '';
+      return this.lov[this.lovSide];
+    },
 
     _lovTop(ref) {
       this.copiedKey = null;
@@ -107,10 +117,26 @@ function lab() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       this.$nextTick(() => { const el = this.$refs[ref]; if (el) el.focus({ preventScroll: true }); });
     },
-    openLovable() { this.view = 'lovable'; this.lovIndex = null; this._lovTop('lovLandingTitle'); },
-    backToLab() { this.view = 'lab'; this.lovIndex = null; window.scrollTo({ top: 0, behavior: 'smooth' }); },
-    openCluster(i) { this.lovIndex = i; this._lovTop('lovDetailTitle'); },
-    backToFour() { this.lovIndex = null; this._lovTop('lovLandingTitle'); },
+    openLovable() { this.view = 'lovable'; this.lovIndex = null; this.lovSide = null; this._lovTop('lovLandingTitle'); },
+    backToLab() { this.view = 'lab'; this.lovIndex = null; this.lovSide = null; window.scrollTo({ top: 0, behavior: 'smooth' }); },
+    openCluster(i) { this.lovIndex = i; this.lovSide = null; this._lovTop('lovDetailTitle'); },
+    backToFour() { this.lovIndex = null; this.lovSide = null; this._lovTop('lovLandingTitle'); },
+    pickSide(side) {
+      if (side !== 'marine' && side !== 'shore') return;
+      this.lovSide = side;
+      this.copiedKey = null;
+      this.toast.show = false;
+      // x-show applies after this tick, so wait a frame before measuring.
+      this.$nextTick(() => requestAnimationFrame(() => {
+        const el = document.getElementById('lov-direction');
+        if (!el || getComputedStyle(el).display === 'none') return;
+        const header = document.querySelector('.header');
+        const topLimit = (header ? header.getBoundingClientRect().bottom : 0) + 8;
+        const rect = el.getBoundingClientRect();
+        const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, topLimit));
+        if (visible < 160) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }));
+    },
 
     next() {
       if (this.step === 1 && !this.selectedType) return;
@@ -157,22 +183,19 @@ function lab() {
       this._toastTimer = setTimeout(() => { this.toast.show = false; }, link ? 9000 : 4500);
     },
 
-    copyOnly(ref, tool) {
+    copyOnly(ref) {
       const el = this.$refs[ref];
       if (!el) return;
-      const name = tool === 'lovable' ? 'Lovable' : 'Copilot';
       this.writeClipboard(el.textContent)
-        .then(() => { this.flash(ref); this.showToast('Prompt copied. Paste it into ' + name + '.', false); })
+        .then(() => { this.flash(ref); this.showToast('Prompt copied. Paste it into Copilot.', false); })
         .catch(() => this.showToast("Couldn't copy automatically. Select the prompt text and copy it.", false));
     },
 
-    copyAndOpen(ref, tool) {
+    copyAndOpen(ref) {
       const el = this.$refs[ref];
       if (!el) return;
-      const lovable = tool === 'lovable';
-      const name = lovable ? 'Lovable' : 'Copilot';
-      const url = lovable ? this.lovableUrl : this.copilotUrl;
-      const linkText = 'Open ' + name + ' \u2197';
+      const url = this.copilotUrl;
+      const linkText = 'Open Copilot \u2197';
       const copying = this.writeClipboard(el.textContent); // starts within the click, before window.open
       let win = null;
       try { win = window.open(url, '_blank'); } catch (e) { win = null; }
@@ -180,12 +203,12 @@ function lab() {
       copying
         .then(() => {
           this.flash(ref);
-          if (win) this.showToast('Prompt copied. ' + name + ' is opening in a new tab: paste it there.', false);
-          else this.showToast('Prompt copied. Your browser blocked the new tab, so open ' + name + ' here:', true, url, linkText);
+          if (win) this.showToast('Prompt copied. Copilot is opening in a new tab: paste it there.', false);
+          else this.showToast('Prompt copied. Your browser blocked the new tab, so open Copilot here:', true, url, linkText);
         })
         .catch(() => {
-          this.showToast(win ? name + " opened, but the prompt wasn't copied. Use Copy, then paste."
-                             : "Couldn't copy or open a new tab. Use Copy, then open " + name + " here:", !win, url, linkText);
+          this.showToast(win ? "Copilot opened, but the prompt wasn't copied. Use Copy, then paste."
+                             : "Couldn't copy or open a new tab. Use Copy, then open Copilot here:", !win, url, linkText);
         });
     },
   };

@@ -366,7 +366,7 @@
     <section x-show="lovIndex === null" aria-labelledby="lov-landing-title">
       <button type="button" class="lov-back" @click="backToLab()">← Back to the Copilot lab</button>
       <h1 id="lov-landing-title" tabindex="-1" class="lov-h1" x-ref="lovLandingTitle">Pick a challenge to turn into a tool</h1>
-      <p class="step-subtitle">Choose one area. You'll see what you could build, how it applies on board and ashore, and a ready-to-copy starter prompt for Lovable.</p>
+      <p class="step-subtitle">Choose one area. Then pick its marine or shore case study. That is your direction to build, in your own words.</p>
 
       <div class="lov-safe" role="note">
         <p>🔒 Use made-up sample data only. No real CVs, appraisals or crew records.</p>
@@ -384,44 +384,44 @@
       </div>
     </section>
 
-    <!-- Detail: one cluster -->
+    <!-- One challenge area: pick marine or shore, then see that direction -->
     <section x-show="lovIndex !== null" style="display:none;" aria-labelledby="lov-detail-title">
       <button type="button" class="lov-back" @click="backToFour()">← Back to the four</button>
       <h1 id="lov-detail-title" tabindex="-1" class="lov-h1" x-ref="lovDetailTitle" x-text="lov ? lov.title : ''"></h1>
+      <p id="lov-pick-label" class="step-subtitle">Pick marine or shore. Both are directions in this challenge. Choose one to see what you could build.</p>
 
-      <div class="lov-block lov-build">
-        <h2 class="lov-h2">What you could build</h2>
-        <p class="lov-build-text" x-text="lov ? lov.build : ''"></p>
+      <div class="lov-sides" role="group" aria-labelledby="lov-pick-label">
+        <button type="button" class="lov-side-btn" data-side="marine"
+                :aria-pressed="lovSide === 'marine'" @click="pickSide('marine')">
+          <span class="lov-side-kicker">Marine<span class="lov-side-selected" x-show="lovSide === 'marine'" x-cloak> · Selected</span></span>
+          <span class="lov-side-text" x-text="lov ? lov.marine : ''"></span>
+          <span class="lov-cluster-arrow" aria-hidden="true">→</span>
+        </button>
+        <button type="button" class="lov-side-btn" data-side="shore"
+                :aria-pressed="lovSide === 'shore'" @click="pickSide('shore')">
+          <span class="lov-side-kicker">Shore<span class="lov-side-selected" x-show="lovSide === 'shore'" x-cloak> · Selected</span></span>
+          <span class="lov-side-text" x-text="lov ? lov.shore : ''"></span>
+          <span class="lov-cluster-arrow" aria-hidden="true">→</span>
+        </button>
       </div>
 
-      <div class="lov-block">
-        <h2 class="lov-h2">Use cases</h2>
-        <div class="lov-cols">
-          <div class="lov-uc lov-marine">
-            <h3>Marine</h3>
-            <p x-text="lov ? lov.marine : ''"></p>
+      <div id="lov-direction" class="lov-direction" x-show="lovSide" x-cloak style="display:none;" :aria-label="lovSideLabel + ' direction'">
+        <p class="lov-kicker" x-text="lovSideLabel"></p>
+        <div class="lov-block lov-build">
+          <h2 class="lov-h2">What you could build</h2>
+          <p class="lov-build-text" x-text="lov ? lov.build : ''"></p>
+        </div>
+        <div class="lov-block">
+          <h2 class="lov-h2">Case study</h2>
+          <div class="lov-case">
+            <p x-text="lovCase"></p>
           </div>
-          <div class="lov-uc lov-shore">
-            <h3>Shore</h3>
-            <p x-text="lov ? lov.shore : ''"></p>
-          </div>
         </div>
-      </div>
-
-      <div class="lov-block prompt-section">
-        <h2 class="lov-h2">Starter prompt</h2>
-        <div class="prompt-box">
-          <div class="prompt-text" id="lov-prompt" x-ref="lovPrompt" x-text="lov ? lov.prompt : ''"></div>
+        <div class="lov-block lov-go">
+          <a class="btn btn-primary lov-open" href="https://lovable.dev" target="_blank" rel="noopener noreferrer">Open Lovable ↗</a>
+          <p class="lov-own-words">Open Lovable and describe the tool you want to build, in your own words.</p>
+          <p class="safe-note lov-note">🔒 Made-up sample data only. This is a prototype: real use goes through BSM's AI risk assessment.</p>
         </div>
-        <div class="prompt-actions">
-          <button type="button" class="btn btn-primary copy-open-btn" @click="copyAndOpen('lovPrompt', 'lovable')">
-            <span x-text="copiedKey === 'lovPrompt' ? 'Copied ✓ Opening Lovable…' : 'Copy & open Lovable ↗'"></span>
-          </button>
-          <button type="button" class="btn btn-secondary copy-only-btn" @click="copyOnly('lovPrompt', 'lovable')">
-            <span x-text="copiedKey === 'lovPrompt' ? 'Copied ✓' : 'Copy'"></span>
-          </button>
-        </div>
-        <p class="safe-note lov-note">🔒 Made-up sample data only. This is a prototype: real use goes through BSM's AI risk assessment.</p>
       </div>
 
       <div class="lov-foot-nav">
